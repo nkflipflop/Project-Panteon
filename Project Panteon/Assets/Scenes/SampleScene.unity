@@ -143,7 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameCamera: {fileID: 519420031}
   Config: {fileID: 11400000, guid: 1fd06acc37771644890f09226a3ef658, type: 2}
-  MapGrid: {fileID: 445108253}
+  GameBoard: {fileID: 445108253}
   ProductionMenu: {fileID: 1005387092}
 --- !u!4 &231431510
 Transform:
@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 445108254}
   - component: {fileID: 445108253}
   m_Layer: 8
-  m_Name: Grid
+  m_Name: GameBoard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Manager: {fileID: 231431509}
-  CellContainer: {fileID: 1991685710}
+  Grid: {fileID: 0}
 --- !u!4 &445108254
 Transform:
   m_ObjectHideFlags: 0
@@ -241,7 +241,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -341,7 +341,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1991685710}
   m_Layer: 8
-  m_Name: CellContainer
+  m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

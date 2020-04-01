@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapGrid : MonoBehaviour {
+public class GameBoard : MonoBehaviour {
 
     public GameManager Manager;     // Game Manager
-    public Transform CellContainer; // All Cells of the grid
+    public Transform Grid; // All Cells of the grid
         
     private int _gridWidth;         // Columns of the grid
     private int _gridHeight;        // Rows of the grid
@@ -21,6 +21,6 @@ public class MapGrid : MonoBehaviour {
                 _gridContent[x, y] = CellType.Blank;
         }
             
-        var cells = CellHelper.SpawnCells(_gridContent, Manager.Config, CellContainer);
+        var cells = CellHelper.SpawnCells(_gridContent, Manager.Config, Grid);
     }
 }

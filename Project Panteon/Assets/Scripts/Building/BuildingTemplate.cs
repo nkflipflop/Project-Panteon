@@ -8,7 +8,7 @@ public class BuildingTemplate : MonoBehaviour {
 
     private GameConfigData _config;
     private Camera _camera;         // Main Camera
-    private MapGrid _mapGrid;           // MapGrid
+    private GameBoard _gameBoard;           // MapGrid
     private BuildingData _buildingData; // Building information
     private List<Cell> BuildingCells;   // All Cells of the building     
 
@@ -16,12 +16,12 @@ public class BuildingTemplate : MonoBehaviour {
     private bool _canPlace;
 
     // Initializes the building
-    public void InitializeBuilding(BuildingData buildingData, GameConfigData config, Camera camera, MapGrid mapGrid) {
+    public void InitializeBuilding(BuildingData buildingData, GameConfigData config, Camera camera, GameBoard gameBoard) {
         HasBuildingPlaced = false;
 
         _config = config;
         _camera = camera;
-        _mapGrid = mapGrid;
+        _gameBoard = gameBoard;
         _buildingData = buildingData;
 
         BuildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Temp), _config, CellContainer);
@@ -68,6 +68,6 @@ public class BuildingTemplate : MonoBehaviour {
 
         GameObject newBuilding = Instantiate(_config.Building, pos, Quaternion.identity) as GameObject;
         Building building = newBuilding.GetComponent<Building>();
-        building.CreateBuilding(_buildingData, _config, _camera, _mapGrid);
+        building.CreateBuilding(_buildingData, _config, _camera, _gameBoard);
     }
 }

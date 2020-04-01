@@ -5,11 +5,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     public Camera GameCamera;
     public GameConfigData Config;
-    public MapGrid MapGrid;
+    public GameBoard GameBoard;
     public ProductionMenu ProductionMenu;
 
     private void Start() {
-        MapGrid.CreateGrid();
+        GameBoard.CreateGrid();
         ProductionMenu.CreateProductionMenu();
     }
 }

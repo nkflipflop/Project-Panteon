@@ -9,7 +9,7 @@ public class Building : MonoBehaviour {
     private List<Cell> BuildingCells;   // All Cells of the building 
     private BuildingData _buildingData; // Building information 
 
-    public void CreateBuilding(BuildingData buildingData, GameConfigData config, Camera camera, MapGrid mapGrid) {
+    public void CreateBuilding(BuildingData buildingData, GameConfigData config, Camera camera, GameBoard gameBoard) {
 
         _config = config;
         _buildingData = buildingData;
