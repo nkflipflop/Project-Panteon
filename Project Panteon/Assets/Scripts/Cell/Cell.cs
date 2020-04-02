@@ -17,7 +17,9 @@ public class Cell : MonoBehaviour {
     }
 
     // Calls the root (belonging building) of the cell
-    private void OnMouseDown() {    
+    private void OnMouseDown() {   
+        BuildingSolid building = transform.root.GetComponent<BuildingSolid>();
+        building.Selected();
     }
 
     // When there is no collision with cell

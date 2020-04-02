@@ -22,4 +22,11 @@ public class BuildingSolid : MonoBehaviour {
             buildingCell.GetComponent<SpriteRenderer>().color = _buildingData.colr;
         }
     }
+
+    public void Selected() {
+        // Coloring the cells with color of selected building
+        foreach (var buildingCell in _buildingCells){
+            buildingCell.GetComponent<SpriteRenderer>().color = Color.black;
+        } 
+    }
 }
