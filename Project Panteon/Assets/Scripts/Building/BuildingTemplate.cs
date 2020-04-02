@@ -2,72 +2,68 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Main Building Script
+// Building Template to place a new building
 public class BuildingTemplate : MonoBehaviour {
     public Transform CellContainer;     // All Cell objects of the building
 
-    private GameConfigData _config;
-    private Camera _camera;         // Main Camera
-    private GameBoard _gameBoard;           // MapGrid
-    private BuildingData _buildingData; // Building information
-    private List<Cell> BuildingCells;   // All Cells of the building     
+    private Camera _camera;             // Main Camera
+    private GameConfigData _config;     // Game Config
+    private List<Cell> _buildingCells;  // All Cells of the building    
+    private BuildingData _buildingData; // Building information on Matrix form 
 
-    private bool HasBuildingPlaced;
-    private bool _canPlace;
+    private bool _canPlace;             // True, when the building can place
 
     // Initializes the building
-    public void InitializeBuilding(BuildingData buildingData, GameConfigData config, Camera camera, GameBoard gameBoard) {
-        HasBuildingPlaced = false;
-
+    public void InitializeBuilding(BuildingData buildingData, GameConfigData config, Camera camera) {
         _config = config;
         _camera = camera;
-        _gameBoard = gameBoard;
         _buildingData = buildingData;
-
-        BuildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Temp), _config, CellContainer);
-
-        foreach (var buildingCell in BuildingCells){
-            buildingCell.GetComponent<SpriteRenderer>().color = _buildingData.colr;
-        }
+        _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Temp), _config, CellContainer);
     }
 
     private void Update() {
-        if (!HasBuildingPlaced){        // if the building is not be placed
-            var pos = _camera.ScreenToWorldPoint(Input.mousePosition);
-            pos.z = transform.position.z;
-            transform.position = new Vector3 (Mathf.Round(pos.x), Mathf.Round(pos.y), pos.z);
+        MovingBuildingTemplate();
+    }
 
-            _canPlace = CheckPlace();   // Checking for available place
+    // Moves the buildingTemplate with mouse position
+    private void MovingBuildingTemplate() {
+        var pos = _camera.ScreenToWorldPoint(Input.mousePosition);
+        pos.z = transform.position.z;
+        transform.position = new Vector3 (Mathf.Round(pos.x), Mathf.Round(pos.y), pos.z);
 
-            if (Input.GetMouseButtonDown(0)){
-                if (_canPlace)
-                    CreateBuilding();
-            }
+        _canPlace = CheckPlace();           // Checking for available place
+
+        if (Input.GetMouseButtonDown(0)){   // When Mouse left-click
+            if (_canPlace)                  // If there is no collision on grid with another building
+                CreateBuilding();
         }
+        if (Input.GetMouseButtonDown(1))
+            Destroy(gameObject);
     }
     
     // Checks whether there is colision with another building
     private bool CheckPlace() {
-        bool canPlace = true;
-        foreach (var buildingCell in BuildingCells){
+        bool canPlace = true; 
+        foreach (var buildingCell in _buildingCells){    // Checking each cell of the building for collision
             RaycastHit2D hit = Physics2D.Raycast(buildingCell.transform.position, Vector3.forward, Mathf.Infinity);
-            buildingCell.GetComponent<SpriteRenderer>().color = _buildingData.colr; 
+            buildingCell.SetValid();                    
             
             if (hit.collider != null && hit.collider.CompareTag("Solid")) {
-                buildingCell.GetComponent<SpriteRenderer>().color = Color.red;      
+                buildingCell.SetInvalid();    
                 canPlace = false;
             }
         }
         return canPlace;
     }
 
-    // Places the building into current mouse position
+    // Places a building into current mouse position
     public void CreateBuilding() {
         Vector3 pos = transform.position;
         pos.z = 0;
 
-        GameObject newBuilding = Instantiate(_config.Building, pos, Quaternion.identity) as GameObject;
-        Building building = newBuilding.GetComponent<Building>();
-        building.CreateBuilding(_buildingData, _config, _camera, _gameBoard);
+        // Creating a building gameObject
+        GameObject newBuilding = Instantiate(_config.BuildingSolid, pos, Quaternion.identity) as GameObject;
+        BuildingSolid building = newBuilding.GetComponent<BuildingSolid>();
+        building.CreateBuilding(_buildingData, _config);
     }
 }

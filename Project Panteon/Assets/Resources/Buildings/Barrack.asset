@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rows: 5
   cols: 4
-  colr: {r: 0.25866985, g: 0, b: 1, a: 1}
+  colr: {r: 0.36565503, g: 0.5660131, b: 0.9339623, a: 1}

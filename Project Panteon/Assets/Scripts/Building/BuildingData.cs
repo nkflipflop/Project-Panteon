@@ -6,8 +6,9 @@ using UnityEngine;
 public class BuildingData : ScriptableObject {
     public int rows = 1;
     public int cols = 1;
-    public Color colr = Color.black;
+    public Color colr;
 
+    // Fills the CellType matrix with given cellType
     public CellType[,] GetCellMatrix(CellType cellType) {
         var output = new CellType[cols, rows];
             
