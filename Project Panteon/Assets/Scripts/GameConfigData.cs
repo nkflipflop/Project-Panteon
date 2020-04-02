@@ -4,22 +4,18 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "GameConfig", menuName = "Game Config")]
 public class GameConfigData : ScriptableObject {
-        //GRID SIZE
+        // Grid dimensions
         public int MapGridWidth;
         public int MapGridHeight;
         
-        //BLOCKS
-        public float CellSize;
-        
-        //PREFABS
-        public CellTypePrefabPair[] CellPrefabs;
+        // Cell Prefabs
+        public CellTypePrefabPair[] CellPrefabs;    // Which object belongs to which type
         private Dictionary<CellType, GameObject> _cellTypePrefabMap;
         
-        //PIECES
-        public int MaximumBuildings;
-        public GameObject BuildingTemplate;
-        public GameObject Building;
-        public BuildingData[] Buildings;
+        // Buildings
+        public GameObject BuildingTemplate;     // Template to place selected building
+        public GameObject BuildingSolid;        // Building that will be placed
+        public BuildingData[] Buildings;        // All distinct buildings on the game
 
         private void Setup() {
             _cellTypePrefabMap = new Dictionary<CellType, GameObject>();
@@ -30,6 +26,7 @@ public class GameConfigData : ScriptableObject {
             }
         }
 
+        // Returns gameObject according to CellType
         public GameObject GetCellPrefabByType(CellType type) {
             if (_cellTypePrefabMap == null)
                 Setup();
@@ -37,6 +34,7 @@ public class GameConfigData : ScriptableObject {
             return _cellTypePrefabMap[type];
         }
         
+        // 
         public BuildingData GetBuildingData(int i) {
             return Buildings[i];
         }
