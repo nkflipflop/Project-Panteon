@@ -1,18 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-
-    public abstract class LoopScrollDataSource {
-        public abstract void ProvideData(Transform transform, int idx);
+public  class LoopScrollDataSource {
+    //LoopScrollDataSource(){}
+    
+    public void ProvideData(Transform transform, int idx) {
+        transform.SendMessage("ScrollCellIndex", idx);
     }
 
-	public class LoopScrollSendIndexSource : LoopScrollDataSource {
-		public static readonly LoopScrollSendIndexSource Instance = new LoopScrollSendIndexSource();
+    public static readonly LoopScrollDataSource Instance = new LoopScrollDataSource();
 
-		LoopScrollSendIndexSource(){}
-
-        public override void ProvideData(Transform transform, int idx)
-        {
-            transform.SendMessage("ScrollCellIndex", idx);
-        }
-    }
+}

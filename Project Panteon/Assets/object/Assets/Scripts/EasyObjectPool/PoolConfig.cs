@@ -3,15 +3,14 @@ using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "PoolConfig", menuName = "PoolConfig")]
 public class PoolConfig : ScriptableObject {
-    //obj pool
-    private Dictionary<string, Pool> poolDict = new Dictionary<string, Pool>();
+    private Dictionary<string, Pool> poolDict = new Dictionary<string, Pool>();     // Pool dictionary
 
-    public void InitPool(string poolName, int size, PoolInflationType type = PoolInflationType.DOUBLE) {
-        if (poolDict.ContainsKey(poolName))
+    public void InitPool(string cellPrefabName) {             // Initiliazing the pool with given name
+        if (poolDict.ContainsKey(cellPrefabName))
                 return;
         else {
-            GameObject pb = Resources.Load<GameObject>(poolName);
-            poolDict[poolName] = new Pool(poolName, pb, size, type);
+            GameObject pb = Resources.Load<GameObject>(cellPrefabName);
+            poolDict[cellPrefabName] = new Pool(cellPrefabName, pb);
         }
     }
 
@@ -21,7 +20,7 @@ public class PoolConfig : ScriptableObject {
 
         if (poolDict.ContainsKey(poolName)) {
             Pool pool = poolDict[poolName];
-            result = pool.NextAvailableObject(true);
+            result = pool.NextAvailableObject();
         }
 
         return result;

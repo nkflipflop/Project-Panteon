@@ -1,50 +1,31 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using System;
-using System.Collections;
 
 using UnityEngine.UI;
 
-    public class LoopVerticalScrollRect : UIBehaviour, IScrollHandler
-    {
-        //==========LoopScrollRect==========
+    public class LoopVerticalScrollRect : MonoBehaviour, IScrollHandler {
+        public int totalCount = -1;     // Total count, negative means INFINITE mode
         public LoopScrollPrefabSource prefabSource; // Prefab Source
-        public int totalCount;  // Total count, negative means INFINITE mode
 
         [HideInInspector]
         [NonSerialized]
-        public LoopScrollDataSource dataSource = LoopScrollSendIndexSource.Instance;
+        public LoopScrollDataSource dataSource = LoopScrollDataSource.Instance;
 
-        protected float threshold = 0;
+        protected float threshold = 1;
         protected int itemTypeStart = 0;
         protected int itemTypeEnd = 0;
 
-        protected GridLayoutGroup m_GridLayout = null;
-
-        private int m_ContentConstraintCount = 0;
-        protected int contentConstraintCount
-        {
+        protected int contentConstraintCount {
             get
             {
-                if (m_ContentConstraintCount > 0)
-                {
-                    return m_ContentConstraintCount;
-                }
-                m_ContentConstraintCount = 1;
+                int ConstraintCount = 1;
                 if (content != null)
                 {
                     GridLayoutGroup layout2 = content.GetComponent<GridLayoutGroup>();
-                    if (layout2 != null)
-                    {
-                        if (layout2.constraint == GridLayoutGroup.Constraint.Flexible)
-                        {
-                            Debug.LogWarning("[LoopScrollRect] Flexible not supported yet");
-                        }
-                        m_ContentConstraintCount = layout2.constraintCount;
-                    }
+                    ConstraintCount = layout2.constraintCount;
                 }
-                return m_ContentConstraintCount;
+                return ConstraintCount;
             }
         }
 
@@ -54,61 +35,38 @@ using UnityEngine.UI;
         private RectTransform m_Content;
         public RectTransform content { get { return m_Content; } set { m_Content = value; } }
 
-        private RectTransform m_ViewRect;
-        protected RectTransform viewRect
-        {
-            get
-            {
-                if (m_ViewRect == null)
-                    m_ViewRect = (RectTransform)transform;
-                return m_ViewRect;
+        protected RectTransform viewRect {
+            get {
+                return (RectTransform) transform;
             }
         }
 
         private Bounds m_ContentBounds;
         private Bounds m_ViewBounds;
 
+        void Start() {
+            RefillCells();
+        }
 
-        //==========LoopScrollRect==========
+        public void RefillCells() {
+            itemTypeStart =  0;
+            itemTypeEnd = 0;
 
-        public void RefillCells(int offset = 0, bool fillViewRect = false)
-        {
-            if (!Application.isPlaying || prefabSource == null)
-                return;
 
-            itemTypeStart =  offset;
-            itemTypeEnd = itemTypeStart;
-
-            if (totalCount >= 0 && itemTypeStart % contentConstraintCount != 0)
-                Debug.LogWarning("Grid will become strange since we can't fill items in the first line");
-
-            // Don't `Canvas.ForceUpdateCanvases();` here, or it will new/delete cells to change itemTypeStart/End
             for (int i = m_Content.childCount - 1; i >= 0; i--)
-            {
                 prefabSource.ReturnObject(m_Content.GetChild(i));
-            }
 
             float sizeToFill = 0, sizeFilled = 0;
-            // m_ViewBounds may be not ready when RefillCells on Start
             sizeToFill = viewRect.rect.size.y;
 
-            float itemSize = 0;
 
-            while (sizeToFill > sizeFilled)
-            {
+            while (sizeToFill > sizeFilled) {
                 float size =  NewItemAtEnd();
-                if(size <= 0) break;
-                else itemSize = size;
+                if(size <= 0) 
+                    break;
                 sizeFilled += size;
             }
 
-            if (fillViewRect && itemSize > 0 && sizeFilled < sizeToFill)
-            {
-                int itemsToAddCount = (int)((sizeToFill - sizeFilled) / itemSize);        //calculate how many items can be added above the offset, so it still is visible in the view
-                int newOffset = offset - itemsToAddCount;
-                if (newOffset < 0) newOffset = 0;
-                if (newOffset != offset) RefillCells(newOffset);                 //refill again, with the new offset value, and now with fillViewRect disabled.
-            }
 
             Vector2 pos = m_Content.anchoredPosition;
             pos.y = 0;
@@ -127,111 +85,86 @@ using UnityEngine.UI;
                 itemTypeStart--;
                 RectTransform newItem = InstantiateNextItem(itemTypeStart);
                 newItem.SetAsFirstSibling();
-                size = Mathf.Max(GetSize(newItem), size);
+                size = GetSize(newItem);
             }
             threshold = Mathf.Max(threshold, size * 1.5f);
 
     
-                Vector2 offset = new Vector2 (0, size);
-                content.anchoredPosition += offset;
-            
+            content.anchoredPosition +=  new Vector2 (0, size);        
             return size;
         }
 
         protected float DeleteItemAtStart()
         {
             // special case: when moving or dragging, we cannot simply delete start when we've reached the end
-            if (( totalCount >= 0 && itemTypeEnd >= totalCount - 1) 
-                || content.childCount == 0)
-            {
+            if (( totalCount >= 0 && itemTypeEnd >= totalCount - 1) || content.childCount == 0)
                 return 0;
-            }
 
             float size = 0;
             for (int i = 0; i < contentConstraintCount; i++)
             {
                 RectTransform oldItem = content.GetChild(0) as RectTransform;
-                size = Mathf.Max(GetSize(oldItem), size);
+                size = GetSize(oldItem);
                 prefabSource.ReturnObject(oldItem);
 
                 itemTypeStart++;
 
                 if (content.childCount == 0)
-                {
                     break;
-                }
             }
 
 
-                Vector2 offset = new Vector2 (0, size);
-                content.anchoredPosition -= offset;
+            content.anchoredPosition -=  new Vector2 (0, size);
             return size;
         }
 
-        protected float NewItemAtEnd()
-        {
+        protected float NewItemAtEnd() {
             if (totalCount >= 0 && itemTypeEnd >= totalCount)
-            {
                 return 0;
-            }
+
             float size = 0;
-            // issue 4: fill lines to end first
             int count = contentConstraintCount - (content.childCount % contentConstraintCount);
             for (int i = 0; i < count; i++)
             {
                 RectTransform newItem = InstantiateNextItem(itemTypeEnd);
-                size = Mathf.Max(GetSize(newItem), size);
+                size = GetSize(newItem);
                 itemTypeEnd++;
                 if (totalCount >= 0 && itemTypeEnd >= totalCount)
-                {
                     break;
-                }
             }
             threshold = Mathf.Max(threshold, size * 1.5f);
-
 
             
             return size;
         }
 
-        protected float DeleteItemAtEnd()
-        {
-            if ((totalCount >= 0 && itemTypeStart < contentConstraintCount) 
-                || content.childCount == 0)
-            {
+        protected float DeleteItemAtEnd() {
+            if ((totalCount >= 0 && itemTypeStart < contentConstraintCount) || content.childCount == 0)
                 return 0;
-            }
 
             float size = 0;
-            for (int i = 0; i < contentConstraintCount; i++)
-            {
+            for (int i = 0; i < contentConstraintCount; i++) {
                 RectTransform oldItem = content.GetChild(content.childCount - 1) as RectTransform;
-                size = Mathf.Max(GetSize(oldItem), size);
+                size = GetSize(oldItem);
                 prefabSource.ReturnObject(oldItem);
 
                 itemTypeEnd--;
                 if (itemTypeEnd % contentConstraintCount == 0 || content.childCount == 0)
-                {
                     break;  //just delete the whole row
-                }
             }
-
 
             return size;
         }
 
-        private RectTransform InstantiateNextItem(int itemIdx)
-        {            
+        private RectTransform InstantiateNextItem(int itemIdx) { 
             RectTransform nextItem = prefabSource.GetObject().transform as RectTransform;
             nextItem.transform.SetParent(content, false);
             nextItem.gameObject.SetActive(true);
             dataSource.ProvideData(nextItem, itemIdx);
             return nextItem;
         }
-        //==========LoopScrollRect==========  
 
-        public  void OnScroll(PointerEventData data)
-        {
+        public  void OnScroll(PointerEventData data) {
             UpdateBounds();
 
             Vector2 delta = data.scrollDelta;
@@ -243,59 +176,22 @@ using UnityEngine.UI;
 
             Vector2 position = m_Content.anchoredPosition;
             position += delta * 25;
-            SetContentAnchoredPosition(position);
-            UpdateBounds();
-        }
 
-        protected  void SetContentAnchoredPosition(Vector2 position)
-        {
-            if (position != m_Content.anchoredPosition)
-            {
+            if (position != m_Content.anchoredPosition) {
                 m_Content.anchoredPosition = position;
                 UpdateBounds(true);
             }
+            UpdateBounds();
         }
 
-        private void UpdateBounds(bool updateItems = false)
-        {
+        private void UpdateBounds(bool updateItems = false) {
             m_ViewBounds = new Bounds(viewRect.rect.center, viewRect.rect.size);
             m_ContentBounds = GetBounds();
 
-            if (m_Content == null)
-                return;
-
-            // ============LoopScrollRect============
-            // Don't do this in Rebuild
-            if (Application.isPlaying && updateItems && UpdateItems(m_ViewBounds, m_ContentBounds))
-            {
+            if (Application.isPlaying && updateItems && UpdateItems(m_ViewBounds, m_ContentBounds)) {
                 Canvas.ForceUpdateCanvases();
                 m_ContentBounds = GetBounds();
             }
-            // ============LoopScrollRect============
-
-            // Make sure content bounds are at least as large as view by adding padding if not.
-            // One might think at first that if the content is smaller than the view, scrolling should be allowed.
-            // However, that's not how scroll views normally work.
-            // Scrolling is *only* possible when content is *larger* than view.
-            // We use the pivot of the content rect to decide in which directions the content bounds should be expanded.
-            // E.g. if pivot is at top, bounds are expanded downwards.
-            // This also works nicely when ContentSizeFitter is used on the content.
-            Vector3 contentSize = m_ContentBounds.size;
-            Vector3 contentPos = m_ContentBounds.center;
-            Vector3 excess = m_ViewBounds.size - contentSize;
-            if (excess.x > 0)
-            {
-                contentPos.x -= excess.x * (m_Content.pivot.x - 0.5f);
-                contentSize.x = m_ViewBounds.size.x;
-            }
-            if (excess.y > 0)
-            {
-                contentPos.y -= excess.y * (m_Content.pivot.y - 0.5f);
-                contentSize.y = m_ViewBounds.size.y;
-            }
-
-            m_ContentBounds.size = contentSize;
-            m_ContentBounds.center = contentPos;
         }
 
         private readonly Vector3[] m_Corners = new Vector3[4];
@@ -322,20 +218,10 @@ using UnityEngine.UI;
             return bounds;
         }
     
-        protected  float GetSize(RectTransform item)
-        {
-            float size = 5;
-            if (m_GridLayout != null)
-            {
-                size += m_GridLayout.cellSize.y;
-            }
-            else
-            {
-                size += LayoutUtility.GetPreferredHeight(item);
-            }
+        protected  float GetSize(RectTransform item) {
+            float size = 5 + LayoutUtility.GetPreferredHeight(item);
             return size;
         }
-
 
         protected  bool UpdateItems(Bounds viewBounds, Bounds contentBounds)
         {

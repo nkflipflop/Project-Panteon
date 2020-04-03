@@ -1,24 +1,21 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Collections;
 
 [System.Serializable]
 public class LoopScrollPrefabSource {
-    public PoolConfig resourceManager;
+    public PoolConfig poolConfig;
     public string prefabName;
-    public int poolSize = 5;
 
-    private bool inited = false;
+    private bool _inited = false;
     public virtual GameObject GetObject() {
-        if(!inited) {
-            resourceManager.InitPool(prefabName, poolSize);
-            inited = true;
+        if(!_inited) {
+            poolConfig.InitPool(prefabName);
+            _inited = true;
         }
-        return resourceManager.GetObjectFromPool(prefabName);
+        return poolConfig.GetObjectFromPool(prefabName);
     }
 
     public virtual void ReturnObject(Transform go) {
-        resourceManager.ReturnObjectToPool(go.gameObject);
+        poolConfig.ReturnObjectToPool(go.gameObject);
     }
 
 }
