@@ -6,8 +6,9 @@ public class PoolCell : MonoBehaviour
 {
     public Text text;
     private PoolObject poolObject;
-    void ScrollCellIndex(int idx) {
-        string name = "Cell " + idx.ToString();
+    
+    void CellIndex(int index) {
+        string name = "Cell " + index.ToString();
         text.text = name;
     }
 }

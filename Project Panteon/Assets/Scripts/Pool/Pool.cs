@@ -1,60 +1,49 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class PoolObject : MonoBehaviour {
-    public string poolName;     // Pool name of this object
-}
+public class PoolObject : MonoBehaviour {}
 
-public class Pool : MonoBehaviour {
+public class Pool : MonoBehaviour 
+{
     public string poolName;                                         // Pool Name
     public GameObject poolCellPrefab;                               // One cell of the pool
 
     private GameObject _rootObj;                                    // Root for unused obj
     private Stack<PoolObject> _poolStack = new Stack<PoolObject>(); // Stack for pool
 
-    public void InitPool() {             // Initiliazing the pool with given name
+    // Initiliazes the pool with given name
+    public void InitPool() {
         _rootObj = new GameObject(poolName + " Pool");
 
-        PoolObject po = GameObject.Instantiate(poolCellPrefab).AddComponent<PoolObject>(); 
-        po.poolName = poolName;
-        PushObject(po);
+        // First Push
+        PoolObject poolObject = GameObject.Instantiate(poolCellPrefab).AddComponent<PoolObject>();
+        PushObject(poolObject);
 
-        // Fill the pool
+        // Filling the pool with first object
         for (int i = 0; i < 50; i++) {
-            po = GameObject.Instantiate(po);
-            PushObject(po);
+            poolObject = GameObject.Instantiate(poolObject);
+            PushObject(poolObject);
         }
     }
 
-    // Returns an available object from the pool 
-    public GameObject GetObjectFromPool() {
-        return PopObject();
-    }
-
-    // Return obj to the pool
+    // Returns object to the pool
     public void ReturnObjectToPool(Transform go) {
-        PoolObject po = go.gameObject.GetComponent<PoolObject>();
-        PushObject(po);
+        PoolObject poolObject = go.gameObject.GetComponent<PoolObject>();
+        PushObject(poolObject);
     }
 
-        // Pushes to the pool stack
-    public void PushObject(PoolObject po) {
-        po.gameObject.SetActive(false);
-        po.gameObject.name = "Cell";
-        _poolStack.Push(po);
-        //add to a root obj
-        po.gameObject.transform.SetParent(_rootObj.transform, false);
+    // Pushes object to the pool stack
+    public void PushObject(PoolObject poolObject) {
+        poolObject.gameObject.SetActive(false);
+        poolObject.gameObject.name = "Cell";
+        _poolStack.Push(poolObject);
+        poolObject.gameObject.transform.SetParent(_rootObj.transform, false);
     }
 
-    // Pops from the pool stack
+    // Pops object from the pool stack
     public GameObject PopObject() {
-        PoolObject po = null;
-        po = _poolStack.Pop();
-
-        GameObject result = null;
-        result = po.gameObject;
+        GameObject result = _poolStack.Pop().gameObject;
         result.SetActive(true);
-
         return result;
     }
 }
