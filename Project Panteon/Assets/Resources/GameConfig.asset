@@ -30,3 +30,4 @@ MonoBehaviour:
     type: 3}
   Buildings:
   - {fileID: 11400000, guid: d4d44a58303f080428805143979afaaa, type: 2}
+  pool: {fileID: 8083583914371095536, guid: 5aaada4375363ee4bb74bd34f6eddd51, type: 3}
