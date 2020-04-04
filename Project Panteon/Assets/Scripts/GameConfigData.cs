@@ -17,6 +17,9 @@ public class GameConfigData : ScriptableObject {
         public GameObject BuildingSolid;        // Building that will be placed
         public BuildingData[] Buildings;        // All distinct buildings on the game
 
+        // Pool
+        public Pool pool;                       // Pool of Production Menu
+
         private void Setup() {
             _cellTypePrefabMap = new Dictionary<CellType, GameObject>();
 

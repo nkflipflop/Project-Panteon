@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ProductionMenu : MonoBehaviour {
     public GameManager Manager; // Game Manager
+    public ScrollBarController scrollBar;
 
     public void CreateProductionMenu() {
+        scrollBar.InitScrollBar(Manager.Config.pool);
         GenerateBuildings();
     }
 
