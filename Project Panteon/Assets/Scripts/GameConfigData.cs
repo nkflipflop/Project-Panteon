@@ -19,7 +19,7 @@ public class GameConfigData : ScriptableObject
         public BuildingData[] Buildings;        // All distinct buildings on the game
 
         // Pool
-        public Pool pool;                       // Pool of Production Menu
+        public Pool Pool;                       // Pool of Production Menu
 
         private void Setup() {
             _cellTypePrefabMap = new Dictionary<CellType, GameObject>();
@@ -36,9 +36,5 @@ public class GameConfigData : ScriptableObject
                 Setup();
             
             return _cellTypePrefabMap[type];
-        }
- 
-        public BuildingData GetBuildingData(int i) {
-            return Buildings[i];
         }
     }

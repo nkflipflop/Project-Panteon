@@ -7,13 +7,16 @@ using System.Collections;
 public class ScrollBarController : MonoBehaviour, IScrollHandler 
 {
     public int totalCount = -1;             // Total count, negative means INFINITE mode
-    private Pool _pool;                     // Pool for Production Menu
 
+
+    private Pool _pool;                     // Pool for Production Menu
     private float _threshold = 1;
     private int _firstIndex = 0;            // Index of first child of ScrollBar Content
     private int _lastIndex = 0;             // Index of last child of ScrollBar Content
     private bool _onTop = true;             // When index is zero in [0, positive infinite] interval
 
+    [SerializeField]
+    protected int ScrollSpeed = 60;
     [SerializeField]
     protected RectTransform _content;       // Rectangle of Content object of ScrollBar
     private RectTransform _viewRect {get { return (RectTransform) transform;}}  // Bound of children of Content object
@@ -32,14 +35,16 @@ public class ScrollBarController : MonoBehaviour, IScrollHandler
         float sizeFilled = 0;
         while (sizeFilled < _viewRect.rect.size.y)
             sizeFilled += NewItemAtEnd();
+            
+        _content.anchoredPosition -= Vector2.up * ScrollSpeed;
     }
 
     // When Scrolling
     public  void OnScroll(PointerEventData data) {
         // Controlling very top of data (0 point)
         if (!_onTop || data.scrollDelta.y < 0)
-            _content.anchoredPosition -= (data.scrollDelta * 50);
-
+            _content.anchoredPosition -= (data.scrollDelta * ScrollSpeed);
+            
         // Updating Content of ScrollBar, if it is possible
         _onTop = false;
         UpdateItems();

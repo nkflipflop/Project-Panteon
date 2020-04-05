@@ -12,7 +12,7 @@ public class ProductionMenu : MonoBehaviour
 
     public void InitProductionMenu(GameManager Manager){
         _Manager = Manager;
-        scrollBar.CreateScrollBar(_Manager.GameConfig.pool, this);  // Creating the produciton menu 
+        scrollBar.CreateScrollBar(_Manager.GameConfig.Pool, this);  // Creating the produciton menu 
     }
 
     // Creates BuildingTemplate to place
@@ -22,7 +22,7 @@ public class ProductionMenu : MonoBehaviour
 
         _templateObject = Instantiate(_Manager.GameConfig.BuildingTemplate, Vector3.back, Quaternion.identity) as GameObject;
         _templateBuilding = _templateObject.GetComponent<BuildingTemplate>();
-        _templateBuilding.CreateBuildingTemplate(_Manager.GameConfig.GetBuildingData(buildingIndex), _Manager);
+        _templateBuilding.CreateBuildingTemplate(_Manager.GameConfig.Buildings[buildingIndex], _Manager);
     }
 
     // Enables placig action, when mouse is in gameBoard

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a18afad4ea30b6a4da3b593678b08cf1, type: 3}
-  m_Name: Barrack
+  m_Name: Barracks
   m_EditorClassIdentifier: 
-  sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  buildingName: Barrack
-  rows: 4
-  cols: 4
-  buildingColor: {r: 0.6509434, g: 0, b: 0.23995566, a: 1}
+  BuildingSprite: {fileID: 21300000, guid: a8d25f3e621f46340bffbeaded20dde6, type: 3}
+  BuildingName: Barracks
+  Rows: 4
+  Cols: 4
+  BuildingColor: {r: 1, g: 0.9166667, b: 0.5, a: 1}
