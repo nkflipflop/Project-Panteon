@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Building", menuName= "Building")]
-public class BuildingData : ScriptableObject {
+public class BuildingData : ScriptableObject
+{
+    public string buildingName;
     public int rows = 1;
     public int cols = 1;
     public Color colr;

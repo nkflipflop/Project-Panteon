@@ -14,7 +14,7 @@ public class BuildingTemplate : MonoBehaviour {
     private bool _canPlace;             // True, when the building can place
 
     // Initializes the building
-    public void InitializeBuilding(BuildingData buildingData, GameConfigData config, Camera camera) {
+    public void CreateBuildingTemplate(BuildingData buildingData, GameConfigData config, Camera camera) {
         _config = config;
         _camera = camera;
         _buildingData = buildingData;

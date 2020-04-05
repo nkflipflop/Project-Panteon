@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolName: ProductionMenuPool
-  poolCellPrefab: {fileID: 174784, guid: 56b618cf8c6e1584db503ad2cee1f27f, type: 3}
+  poolCell: {fileID: 174784, guid: 56b618cf8c6e1584db503ad2cee1f27f, type: 3}

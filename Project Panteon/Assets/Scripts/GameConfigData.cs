@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GameConfig", menuName = "Game Config")]
-public class GameConfigData : ScriptableObject {
+public class GameConfigData : ScriptableObject 
+{
         // Grid dimensions
         public int MapGridWidth;
         public int MapGridHeight;
@@ -36,8 +37,13 @@ public class GameConfigData : ScriptableObject {
             
             return _cellTypePrefabMap[type];
         }
+        /*
         
-        // 
+        public void GenerateBuilding(int buildingIndex) {
+            GameObject buildingObject = Instantiate(BuildingTemplate, Vector3.back, Quaternion.identity) as GameObject;
+            BuildingTemplate building = buildingObject.GetComponent<BuildingTemplate>();
+            building.InitializeBuilding(GetBuildingData(0), this, gameManager.GameCamera);
+        }*/
         public BuildingData GetBuildingData(int i) {
             return Buildings[i];
         }
