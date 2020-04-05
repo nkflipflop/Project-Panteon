@@ -5,20 +5,18 @@ using UnityEngine;
 // Building Template to place a new building
 public class BuildingTemplate : MonoBehaviour {
     public Transform CellContainer;     // All Cell objects of the building
+    public bool onBoard = false;
 
-    private Camera _camera;             // Main Camera
-    private GameConfigData _config;     // Game Config
+    private GameManager _Manager;       // Game Manager
     private List<Cell> _buildingCells;  // All Cells of the building    
     private BuildingData _buildingData; // Building information on Matrix form 
-
     private bool _canPlace;             // True, when the building can place
-
+    
     // Initializes the building
-    public void InitializeBuilding(BuildingData buildingData, GameConfigData config, Camera camera) {
-        _config = config;
-        _camera = camera;
+    public void CreateBuildingTemplate(BuildingData buildingData, GameManager Manager) {
+        _Manager = Manager;
         _buildingData = buildingData;
-        _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Temp), _config, CellContainer);
+        _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Temp), _Manager.GameConfig, CellContainer);
     }
 
     private void Update() {
@@ -27,14 +25,14 @@ public class BuildingTemplate : MonoBehaviour {
 
     // Moves the buildingTemplate with mouse position
     private void MovingBuildingTemplate() {
-        var pos = _camera.ScreenToWorldPoint(Input.mousePosition);
+        var pos = _Manager.GameCamera.ScreenToWorldPoint(Input.mousePosition);
         pos.z = transform.position.z;
         transform.position = new Vector3 (Mathf.Round(pos.x), Mathf.Round(pos.y), pos.z);
 
         _canPlace = CheckPlace();           // Checking for available place
 
-        if (Input.GetMouseButtonDown(0)){   // When Mouse left-click
-            if (_canPlace)                  // If there is no collision on grid with another building
+        if (Input.GetMouseButtonDown(0)) {   // When Mouse left-click
+            if (_canPlace && onBoard)                  // If there is no collision on grid with another building
                 CreateBuilding();
         }
         if (Input.GetMouseButtonDown(1))
@@ -62,8 +60,9 @@ public class BuildingTemplate : MonoBehaviour {
         pos.z = 0;
 
         // Creating a building gameObject
-        GameObject newBuilding = Instantiate(_config.BuildingSolid, pos, Quaternion.identity) as GameObject;
+        GameObject newBuilding = Instantiate(_Manager.GameConfig.BuildingSolid, pos, Quaternion.identity) as GameObject;
+        newBuilding.transform.SetParent(_Manager.GameBoard.transform);
         BuildingSolid building = newBuilding.GetComponent<BuildingSolid>();
-        building.CreateBuilding(_buildingData, _config);
+        building.CreateBuilding(_buildingData, _Manager.GameConfig);
     }
 }

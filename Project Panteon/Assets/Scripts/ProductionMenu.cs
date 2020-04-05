@@ -2,18 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProductionMenu : MonoBehaviour {
-    public GameManager Manager; // Game Manager
-    public ScrollBarController scrollBar;
+public class ProductionMenu : MonoBehaviour
+{
+    public ScrollBarController scrollBar;   // Produciton Menu
 
-    public void CreateProductionMenu() {
-        scrollBar.InitScrollBar(Manager.Config.pool);
-        GenerateBuildings();
+    private GameManager _Manager;             // Game Manager
+    private GameObject _templateObject;  // Current Building Template
+    private BuildingTemplate _templateBuilding; // BuildingTemplate of _templateOnControl object
+
+    public void InitProductionMenu(GameManager Manager){
+        _Manager = Manager;
+        scrollBar.CreateScrollBar(_Manager.GameConfig.pool, this);  // Creating the produciton menu 
     }
 
-    private void GenerateBuildings() {
-        GameObject buildingObject = Instantiate(Manager.Config.BuildingTemplate, Vector3.back, Quaternion.identity) as GameObject;
-        BuildingTemplate building = buildingObject.GetComponent<BuildingTemplate>();
-        building.InitializeBuilding(Manager.Config.GetBuildingData(0), Manager.Config, Manager.GameCamera);
+    // Creates BuildingTemplate to place
+    public void GenerateBuildingTemplate(int buildingIndex) {
+        if (_templateObject)
+            Destroy(_templateObject);
+
+        _templateObject = Instantiate(_Manager.GameConfig.BuildingTemplate, Vector3.back, Quaternion.identity) as GameObject;
+        _templateBuilding = _templateObject.GetComponent<BuildingTemplate>();
+        _templateBuilding.CreateBuildingTemplate(_Manager.GameConfig.GetBuildingData(buildingIndex), _Manager);
+    }
+
+    // Enables placig action, when mouse is in gameBoard
+    public void OnBoard(){
+        if (_templateBuilding) _templateBuilding.onBoard = true;
+    }
+
+    // Avoids placig action, when mouse is in gameBoard
+    public void OnHUD(){
+        if (_templateBuilding) _templateBuilding.onBoard = false;
     }
 }

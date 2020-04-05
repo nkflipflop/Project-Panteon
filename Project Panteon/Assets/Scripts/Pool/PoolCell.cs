@@ -4,11 +4,39 @@ using System.Collections;
 
 public class PoolCell : MonoBehaviour
 {
-    public Text text;
-    private PoolObject poolObject;
-    
-    void CellIndex(int index) {
-        string name = "Cell " + index.ToString();
-        text.text = name;
+    public GameConfigData Config;   // Game Config
+
+    [SerializeField]
+    protected Text text;            // Text on cell
+    [SerializeField]
+    protected Image image;
+    [SerializeField]
+    protected Sprite defaultSprite;
+
+    private int _index;             // Index of building
+    private ProductionMenu _productionMenu;   
+
+    // Indexing cells
+    public void CellIndexing(int index, ProductionMenu productionMenu) {
+        _productionMenu = productionMenu;
+
+        int buildingCount = Config.Buildings.Length;
+        if (index < buildingCount){
+            _index = index;
+            BuildingData building = Config.Buildings[_index];
+            text.text = building.buildingName;
+            image.sprite = building.sprite;
+        }
+        else {
+            _index = buildingCount;
+            text.text = "Null";
+            image.sprite = defaultSprite;
+        }
+    }
+
+    // Creates Building Template
+    public void GenerateBuildingTemplate(){
+        if (text.text != "Null")
+            _productionMenu.GenerateBuildingTemplate(_index);
     }
 }
