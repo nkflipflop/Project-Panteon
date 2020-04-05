@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3741335315431772709}
   - component: {fileID: 1120144242851945017}
   m_Layer: 0
-  m_Name: BlankCell
+  m_Name: GridCell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,7 +70,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 606911fe49799084e9715b1f3e051ac9, type: 3}
-  m_Color: {r: 0.2552065, g: 0.31151655, b: 0.3490566, a: 1}
+  m_Color: {r: 0.3962264, g: 0.34106097, b: 0.28221786, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

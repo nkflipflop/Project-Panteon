@@ -5,11 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Building", menuName= "Building")]
 public class BuildingData : ScriptableObject
 {
-    public Sprite BuildingSprite;    
     public string BuildingName;
+    public Sprite BuildingSprite;    
+    public Color BuildingColor = Color.white;
     public int Rows = 1;
     public int Cols = 1;
-    public Color BuildingColor = Color.white;
+
 
     // Fills the CellType matrix with given cellType
     public CellType[,] GetCellMatrix(CellType cellType) {
