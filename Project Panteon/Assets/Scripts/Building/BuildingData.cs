@@ -1,14 +1,15 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Building", menuName= "Building")]
 public class BuildingData : ScriptableObject
 {
+    public Sprite sprite;    
     public string buildingName;
     public int rows = 1;
     public int cols = 1;
-    public Color colr;
+    public Color buildingColor = Color.white;
 
     // Fills the CellType matrix with given cellType
     public CellType[,] GetCellMatrix(CellType cellType) {

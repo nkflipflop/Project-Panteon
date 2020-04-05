@@ -6,7 +6,6 @@ using System.Collections;
 
 public class ScrollBarController : MonoBehaviour, IScrollHandler 
 {
-    public BuildingData building;
     public ProductionController productionController;
 
     public int totalCount = -1;             // Total count, negative means INFINITE mode
@@ -192,7 +191,7 @@ public class ScrollBarController : MonoBehaviour, IScrollHandler
         GameObject nextItem = _pool.PopObject();
         nextItem.transform.SetParent(_content, false);
         nextItem.SetActive(true);
-        nextItem.GetComponent<PoolCell>().CellIndex(itemIndex, productionController);
+        nextItem.GetComponent<PoolCell>().CellIndexing(itemIndex, productionController);
         return nextItem.transform as RectTransform;
     }
 }

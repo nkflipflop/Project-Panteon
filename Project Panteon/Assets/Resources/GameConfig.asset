@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33cdd4ad5f105bc4fa4187f9df505674, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  MapGridWidth: 30
-  MapGridHeight: 30
+  MapGridWidth: 50
+  MapGridHeight: 50
   CellPrefabs:
   - CellType: 0
     GameObject: {fileID: 1120144242851945022, guid: 38f43f3de37030f49983f164219a4e37,
@@ -30,4 +30,6 @@ MonoBehaviour:
     type: 3}
   Buildings:
   - {fileID: 11400000, guid: d4d44a58303f080428805143979afaaa, type: 2}
+  - {fileID: 11400000, guid: 7dfc125659713c04c8488feb16db086d, type: 2}
+  - {fileID: 11400000, guid: 1922b8e983fe9204aafdf95b9e6738e8, type: 2}
   pool: {fileID: 8083583914371095536, guid: 5aaada4375363ee4bb74bd34f6eddd51, type: 3}

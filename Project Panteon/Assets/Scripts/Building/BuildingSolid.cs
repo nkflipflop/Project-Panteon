@@ -19,7 +19,7 @@ public class BuildingSolid : MonoBehaviour {
 
         // Coloring the cells with color of selected building
         foreach (var buildingCell in _buildingCells){
-            buildingCell.GetComponent<SpriteRenderer>().color = _buildingData.colr;
+            buildingCell.GetComponent<SpriteRenderer>().color = _buildingData.buildingColor;
         }
     }
 

@@ -5,14 +5,14 @@ using UnityEngine;
 // Building Template to place a new building
 public class BuildingTemplate : MonoBehaviour {
     public Transform CellContainer;     // All Cell objects of the building
+    public bool onBoard = false;
 
     private Camera _camera;             // Main Camera
     private GameConfigData _config;     // Game Config
     private List<Cell> _buildingCells;  // All Cells of the building    
     private BuildingData _buildingData; // Building information on Matrix form 
-
     private bool _canPlace;             // True, when the building can place
-
+    
     // Initializes the building
     public void CreateBuildingTemplate(BuildingData buildingData, GameConfigData config, Camera camera) {
         _config = config;
@@ -33,8 +33,8 @@ public class BuildingTemplate : MonoBehaviour {
 
         _canPlace = CheckPlace();           // Checking for available place
 
-        if (Input.GetMouseButtonDown(0)){   // When Mouse left-click
-            if (_canPlace)                  // If there is no collision on grid with another building
+        if (Input.GetMouseButtonDown(0)) {   // When Mouse left-click
+            if (_canPlace && onBoard)                  // If there is no collision on grid with another building
                 CreateBuilding();
         }
         if (Input.GetMouseButtonDown(1))
