@@ -18,7 +18,7 @@ public class Cell : MonoBehaviour {
 
     // Calls the root (belonging building) of the cell
     private void OnMouseDown() {   
-        BuildingSolid building = transform.root.GetComponent<BuildingSolid>();
+        BuildingSolid building = transform.parent.parent.GetComponent<BuildingSolid>();
         building.Selected();
     }
 

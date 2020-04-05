@@ -16,4 +16,4 @@ MonoBehaviour:
   buildingName: Town Center
   rows: 5
   cols: 5
-  buildingColor: {r: 1, g: 0, b: 0, a: 1}
+  buildingColor: {r: 0.0521983, g: 0.22723618, b: 0.6509434, a: 1}

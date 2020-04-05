@@ -266,7 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93c4ce802b43bd041bec4ba63e767335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Manager: {fileID: 231431509}
+  scrollBar: {fileID: 2035734682}
 --- !u!114 &168204199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,9 +404,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameCamera: {fileID: 519420031}
-  Config: {fileID: 11400000, guid: 1fd06acc37771644890f09226a3ef658, type: 2}
+  GameConfig: {fileID: 11400000, guid: 1fd06acc37771644890f09226a3ef658, type: 2}
   GameBoard: {fileID: 445108253}
-  scrollBar: {fileID: 2035734682}
+  ProductionMenu: {fileID: 168204198}
 --- !u!4 &231431510
 Transform:
   m_ObjectHideFlags: 0
@@ -535,7 +535,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.12548949, g: 0.16231786, b: 0.18867922, a: 0}
+  m_BackGroundColor: {r: 0.24313726, g: 0.29647058, b: 0.3372549, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -738,7 +738,7 @@ GameObject:
   - component: {fileID: 1638269229}
   - component: {fileID: 1638269228}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1111,7 +1111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce71017a2903f7c4c9a699e438d0b897, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productionController: {fileID: 168204198}
   totalCount: -1
   _content: {fileID: 188681379}
 --- !u!114 &2035734683

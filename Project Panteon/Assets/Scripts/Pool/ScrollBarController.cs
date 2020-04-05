@@ -6,8 +6,6 @@ using System.Collections;
 
 public class ScrollBarController : MonoBehaviour, IScrollHandler 
 {
-    public ProductionController productionController;
-
     public int totalCount = -1;             // Total count, negative means INFINITE mode
     private Pool _pool;                     // Pool for Production Menu
 
@@ -21,9 +19,12 @@ public class ScrollBarController : MonoBehaviour, IScrollHandler
     private RectTransform _viewRect {get { return (RectTransform) transform;}}  // Bound of children of Content object
     private Vector3[] _corners = new Vector3[4];
     private int contentConstraintCount = 2; // Columns count for grid
+    private ProductionMenu _productionMenu;
+
 
     // Initializing the scrollBar content
-    public void CreateScrollBar(Pool pool) {
+    public void CreateScrollBar(Pool pool, ProductionMenu productionMenu) {
+        _productionMenu = productionMenu;
         _pool = pool;
         _pool.InitPool(transform);
         
@@ -191,7 +192,7 @@ public class ScrollBarController : MonoBehaviour, IScrollHandler
         GameObject nextItem = _pool.PopObject();
         nextItem.transform.SetParent(_content, false);
         nextItem.SetActive(true);
-        nextItem.GetComponent<PoolCell>().CellIndexing(itemIndex, productionController);
+        nextItem.GetComponent<PoolCell>().CellIndexing(itemIndex, _productionMenu);
         return nextItem.transform as RectTransform;
     }
 }

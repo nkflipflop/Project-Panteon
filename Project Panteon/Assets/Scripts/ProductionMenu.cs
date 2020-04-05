@@ -2,21 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProductionController : MonoBehaviour
+public class ProductionMenu : MonoBehaviour
 {
-    public GameManager Manager;             // Game Manager
-    
+    public ScrollBarController scrollBar;   // Produciton Menu
+
+    private GameManager _Manager;             // Game Manager
     private GameObject _templateObject;  // Current Building Template
     private BuildingTemplate _templateBuilding; // BuildingTemplate of _templateOnControl object
+
+    public void InitProductionMenu(GameManager Manager){
+        _Manager = Manager;
+        scrollBar.CreateScrollBar(_Manager.GameConfig.pool, this);  // Creating the produciton menu 
+    }
 
     // Creates BuildingTemplate to place
     public void GenerateBuildingTemplate(int buildingIndex) {
         if (_templateObject)
             Destroy(_templateObject);
 
-        _templateObject = Instantiate(Manager.Config.BuildingTemplate, Vector3.back, Quaternion.identity) as GameObject;
+        _templateObject = Instantiate(_Manager.GameConfig.BuildingTemplate, Vector3.back, Quaternion.identity) as GameObject;
         _templateBuilding = _templateObject.GetComponent<BuildingTemplate>();
-        _templateBuilding.CreateBuildingTemplate(Manager.Config.GetBuildingData(buildingIndex), Manager.Config, Manager.GameCamera);
+        _templateBuilding.CreateBuildingTemplate(_Manager.GameConfig.GetBuildingData(buildingIndex), _Manager);
     }
 
     // Enables placig action, when mouse is in gameBoard

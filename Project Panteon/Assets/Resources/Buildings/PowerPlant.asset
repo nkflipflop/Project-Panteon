@@ -16,4 +16,4 @@ MonoBehaviour:
   buildingName: Power Plant
   rows: 2
   cols: 3
-  buildingColor: {r: 0, g: 1, b: 0.22006416, a: 1}
+  buildingColor: {r: 0, g: 0.6981132, b: 0.33288065, a: 1}

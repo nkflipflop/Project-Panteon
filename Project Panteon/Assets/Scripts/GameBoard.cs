@@ -13,8 +13,8 @@ public class GameBoard : MonoBehaviour {
 
     // Creates the grid
     public void CreateGrid() {
-        _gridHeight = Manager.Config.MapGridHeight;
-        _gridWidth = Manager.Config.MapGridWidth;
+        _gridHeight = Manager.GameConfig.MapGridHeight;
+        _gridWidth = Manager.GameConfig.MapGridWidth;
         _gridContent = new CellType[_gridWidth, _gridHeight];
 
         // Filling the grid with blank cell    
@@ -23,6 +23,6 @@ public class GameBoard : MonoBehaviour {
                 _gridContent[x, y] = CellType.Blank;
         }
         
-        var cells = CellHelper.SpawnCells(_gridContent, Manager.Config, Grid);
+        var cells = CellHelper.SpawnCells(_gridContent, Manager.GameConfig, Grid);
     }
 }

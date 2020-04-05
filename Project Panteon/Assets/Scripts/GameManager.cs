@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour 
+{
     public Camera GameCamera;               // Main Camera
-    public GameConfigData Config;           // Game Config
+    public GameConfigData GameConfig;           // Game Config
     public GameBoard GameBoard;             // Game Board
-    public ScrollBarController scrollBar;   // Produciton Menu
+    public ProductionMenu ProductionMenu;
 
     private void Start() {
         GameBoard.CreateGrid();                 // Creating the game board
-        scrollBar.CreateScrollBar(Config.pool);  // Creating the produciton menu 
+        ProductionMenu.InitProductionMenu(this);
     }
 }
