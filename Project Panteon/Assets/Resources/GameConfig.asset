@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33cdd4ad5f105bc4fa4187f9df505674, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  MapGridWidth: 50
+  MapGridWidth: 100
   MapGridHeight: 50
   CellPrefabs:
   - CellType: 0
