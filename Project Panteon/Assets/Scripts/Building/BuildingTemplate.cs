@@ -3,20 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Building Template to place a new building
-public class BuildingTemplate : MonoBehaviour {
-    public Transform CellContainer;     // All Cell objects of the building
-    public bool onBoard = false;
+public class BuildingTemplate : BuildingMain 
+{
+    public bool onBoard = false;    // True, when mouse on gameBoard
 
-    private GameManager _Manager;       // Game Manager
-    private List<Cell> _buildingCells;  // All Cells of the building    
-    private BuildingData _buildingData; // Building information on Matrix form 
-    private bool _canPlace;             // True, when the building can place
+    private bool _canPlace;         // True, when the building can place
     
-    // Initializes the building
-    public void CreateBuildingTemplate(BuildingData buildingData, GameManager Manager) {
-        _Manager = Manager;
-        _buildingData = buildingData;
-        _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Temp), _Manager.GameConfig, CellContainer);
+    
+    public override void Created() {
+        // Filling the building with tempCells
+        _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Temp), _manager.GameConfig, CellContainer);
     }
 
     private void Update() {
@@ -25,18 +21,25 @@ public class BuildingTemplate : MonoBehaviour {
 
     // Moves the buildingTemplate with mouse position
     private void MovingBuildingTemplate() {
-        var pos = _Manager.GameCamera.ScreenToWorldPoint(Input.mousePosition);
+        var pos = _manager.GameCamera.ScreenToWorldPoint(Input.mousePosition);
         pos.z = transform.position.z;
         transform.position = new Vector3 (Mathf.Round(pos.x), Mathf.Round(pos.y), pos.z);
 
-        _canPlace = CheckPlace();           // Checking for available place
+        // Checking for available place
+        _canPlace = CheckPlace();
 
-        if (Input.GetMouseButtonDown(0)) {   // When Mouse left-click
-            if (_canPlace && onBoard)                  // If there is no collision on grid with another building
-                CreateBuilding();
+        // When Mouse left-click
+        if (Input.GetMouseButtonDown(0)) {
+            // If there is no collision on grid with another building
+            if (_canPlace && onBoard)     
+                CreateBuildingSolid();
         }
-        if (Input.GetMouseButtonDown(1))
+
+        // Destroys thi object, When Mouse right-click
+        if (Input.GetMouseButtonDown(1)) {
             Destroy(gameObject);
+            _manager.GameConfig.BuildingOnControl = null;
+        }
     }
     
     // Checks whether there is colision with another building
@@ -55,14 +58,13 @@ public class BuildingTemplate : MonoBehaviour {
     }
 
     // Places a building into current mouse position
-    public void CreateBuilding() {
+    public void CreateBuildingSolid() {
         Vector3 pos = transform.position;
         pos.z = 0;
 
         // Creating a building gameObject
-        GameObject newBuilding = Instantiate(_Manager.GameConfig.BuildingSolid, pos, Quaternion.identity) as GameObject;
-        newBuilding.transform.SetParent(_Manager.GameBoard.transform);
-        BuildingSolid building = newBuilding.GetComponent<BuildingSolid>();
-        building.CreateBuilding(_buildingData, _Manager.GameConfig);
+        GameObject buildingObject = Instantiate(_manager.GameConfig.BuildingSolid, pos, Quaternion.identity) as GameObject;
+        BuildingSolid building = buildingObject.GetComponent<BuildingSolid>(); 
+        building.CreateBuilding(_buildingData, _manager);
     }
 }

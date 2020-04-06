@@ -5,12 +5,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour 
 {
     public Camera GameCamera;               // Main Camera
-    public GameConfigData GameConfig;           // Game Config
+    public GameConfigData GameConfig;       // Game Config
     public GameBoard GameBoard;             // Game Board
-    public ProductionMenu ProductionMenu;
+    public ProductionMenu ProductionMenu;   // Production Menu
+    public InformationMenu InformationMenu; // Information Menu
 
     private void Start() {
-        GameBoard.CreateGrid();                 // Creating the game board
-        ProductionMenu.InitProductionMenu(this);
+        GameBoard.CreateGrid();                     // Creating the game board
+        ProductionMenu.InitProductionMenu(this);    // Initing
+        InformationMenu.InitInformationMenu(this);  // Initing
     }
 }

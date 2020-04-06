@@ -7,11 +7,12 @@ public class PoolCell : MonoBehaviour
     public GameConfigData GameConfig;   // Game Config
 
     [SerializeField]
+    protected Sprite defaultSprite; // Default Sprite
+    [SerializeField]
+    protected Image image;          // Sprite of building
+    [SerializeField]
     protected Text text;            // Text on cell
-    [SerializeField]
-    protected Image image;
-    [SerializeField]
-    protected Sprite defaultSprite;
+
 
     private int _index;             // Index of building
     private ProductionMenu _productionMenu;   
@@ -20,6 +21,7 @@ public class PoolCell : MonoBehaviour
     public void CellIndexing(int index, ProductionMenu productionMenu) {
         _productionMenu = productionMenu;
 
+        // If there is a building on given index
         int buildingCount = GameConfig.Buildings.Length;
         if (index < buildingCount){
             _index = index;
@@ -37,6 +39,6 @@ public class PoolCell : MonoBehaviour
     // Creates Building Template
     public void GenerateBuildingTemplate(){
         if (text.text != "")
-            _productionMenu.GenerateBuildingTemplate(_index);
+            _productionMenu.CreateBuildingTemplate(_index);
     }
 }

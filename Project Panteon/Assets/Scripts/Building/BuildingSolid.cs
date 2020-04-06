@@ -3,32 +3,55 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class BuildingSolid : MonoBehaviour {
-    public Transform CellContainer;     // All Cell objects of the building
+public class BuildingSolid : BuildingMain 
+{
+    public Color SelectedColor;
 
-    private GameConfigData _gameConfig; // Game Config
-    private List<Cell> _buildingCells;  // All Cells of the building 
-    private BuildingData _buildingData; // Building information on Matrix form 
+    private Transform _spawnPoint;
 
-    // Creates the placed building 
-    public void CreateBuilding(BuildingData buildingData, GameConfigData gameConfig) {
-        _gameConfig = gameConfig;
-        _buildingData = buildingData;
-
-        // Setting name of objet as building name
-        name = _buildingData.name;
-
-        // Filling the building with solid cell
-        _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Solid), _gameConfig, CellContainer);
+    public override void Created() {
+        transform.parent = _manager.GameBoard.transform.GetChild(1);
+        // Filling the building with solidCells
+        _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Solid), _manager.GameConfig, CellContainer);
 
         // Coloring the cells with color of selected building
-        foreach (var buildingCell in _buildingCells)
-            buildingCell.GetComponent<SpriteRenderer>().color = _buildingData.BuildingColor;
+        Deselect();
+
+        if (_buildingData.CanProductUnit)
+            CreateSpawnPoint();
     }
 
+    private void CreateSpawnPoint() {
+        Vector3 pos = _buildingCells[_buildingCells.Capacity - 1].transform.position;
+        
+        // Spawn position of unit, when created
+        pos.x += 2;
+        GameObject spawnPoint = new GameObject();
+        spawnPoint.transform.position = pos;
+        spawnPoint.transform.parent = transform;    
+        spawnPoint.name = "Spawn Point";
+
+        // Target position to go for unit after spawning
+        pos.y -= 2;
+        GameObject spawnTarget = Instantiate(spawnPoint, pos, Quaternion.identity, transform);
+        spawnTarget.name = "Spawn Target";
+    }
+    public void CallBaseBuilding() {
+        _manager.InformationMenu.RequestSelection(this);
+    }
+
+    // When the building is selected to get information
     public void Selected() {
-        // Coloring the cells with color of selected building
+        // Coloring the cells with selection color
         foreach (var buildingCell in _buildingCells)
-            buildingCell.GetComponent<SpriteRenderer>().color = Color.black;
+            buildingCell.GetComponent<SpriteRenderer>().color = SelectedColor;
+
+    }
+
+    // When the building is deselected
+    public void Deselect() {
+        // Coloring the cells with color of building
+        foreach (var buildingCell in _buildingCells)
+            buildingCell.GetComponent<SpriteRenderer>().color = _buildingData.BuildingColor;
     }
 }

@@ -15,5 +15,6 @@ MonoBehaviour:
   BuildingName: Barracks
   BuildingSprite: {fileID: 21300000, guid: a8d25f3e621f46340bffbeaded20dde6, type: 3}
   BuildingColor: {r: 0.9339623, g: 0.21586865, b: 0.25136667, a: 1}
+  CanProductUnit: 1
   Rows: 4
   Cols: 4

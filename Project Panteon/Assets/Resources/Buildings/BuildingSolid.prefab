@@ -75,3 +75,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CellContainer: {fileID: 8450541738027950014}
+  SelectedColor: {r: 1, g: 0.8022464, b: 0, a: 1}

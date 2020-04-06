@@ -29,7 +29,7 @@ public class Pool : MonoBehaviour
     // Pushes object to the pool stack
     public void PushObject(GameObject poolObject) {
         poolObject.SetActive(false);
-        poolObject.name = "Cell";
+        poolObject.name = "Pool Cell";
         _poolStack.Push(poolObject);
         poolObject.transform.SetParent(_parent.transform, false);
     }

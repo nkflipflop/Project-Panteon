@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 61215164166801332}
   - component: {fileID: 7001428675559559916}
   m_Layer: 0
-  m_Name: BuildingCell
+  m_Name: SolidCell
   m_TagString: Solid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,4 +119,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df9b34b6162022c409cb0f748b44f307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 956507495654766908}
+  CollisinColor: {r: 0.7430861, g: 1, b: 0, a: 1}

@@ -8,6 +8,7 @@ public class BuildingData : ScriptableObject
     public string BuildingName;
     public Sprite BuildingSprite;    
     public Color BuildingColor = Color.white;
+    public bool CanProductUnit = false;
     public int Rows = 1;
     public int Cols = 1;
 
