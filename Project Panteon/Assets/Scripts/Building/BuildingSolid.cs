@@ -32,7 +32,7 @@ public class BuildingSolid : BuildingMain
         spawnPoint.name = "Spawn Point";
 
         // Target position to go for unit after spawning
-        pos.y -= 2;
+        pos.y -= 4;
         GameObject spawnTarget = Instantiate(spawnPoint, pos, Quaternion.identity, transform);
         spawnTarget.name = "Spawn Target";
     }
@@ -45,8 +45,8 @@ public class BuildingSolid : BuildingMain
         // Coloring the cells with selection color
         foreach (var buildingCell in _buildingCells)
             buildingCell.GetComponent<SpriteRenderer>().color = SelectedColor;
-
     }
+
 
     // When the building is deselected
     public void Deselect() {

@@ -65,6 +65,6 @@ public class BuildingTemplate : BuildingMain
         // Creating a building gameObject
         GameObject buildingObject = Instantiate(_manager.GameConfig.BuildingSolid, pos, Quaternion.identity) as GameObject;
         BuildingSolid building = buildingObject.GetComponent<BuildingSolid>(); 
-        building.CreateBuilding(_buildingData, _manager);
+        building.CreateBuilding(BuildingIndex, _manager);
     }
 }

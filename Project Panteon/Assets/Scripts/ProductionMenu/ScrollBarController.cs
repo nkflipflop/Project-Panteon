@@ -197,7 +197,7 @@ public class ScrollBarController : MonoBehaviour, IScrollHandler
         GameObject nextItem = _pool.PopObject();
         nextItem.transform.SetParent(_content, false);
         nextItem.SetActive(true);
-        nextItem.GetComponent<PoolCell>().CellIndexing(itemIndex, _productionMenu);
+        nextItem.GetComponent<ProductionMenuCell>().CellIndexing(itemIndex, _productionMenu);
         return nextItem.transform as RectTransform;
     }
 }

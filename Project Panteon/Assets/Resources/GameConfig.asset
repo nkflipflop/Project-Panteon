@@ -14,15 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapGridWidth: 100
   MapGridHeight: 50
-  BuildingOnControl: {fileID: 0}
-  BuildingTemplate: {fileID: 6433850267492192932, guid: a366816851556a0459076570754466b9,
-    type: 3}
-  BuildingSolid: {fileID: 8272792059329085670, guid: 11e1129c2828b754a8352e0ee9582e19,
-    type: 3}
-  Buildings:
-  - {fileID: 11400000, guid: d4d44a58303f080428805143979afaaa, type: 2}
-  - {fileID: 11400000, guid: 7dfc125659713c04c8488feb16db086d, type: 2}
-  - {fileID: 11400000, guid: 1922b8e983fe9204aafdf95b9e6738e8, type: 2}
   CellPrefabs:
   - CellType: 0
     GameObject: {fileID: 1120144242851945022, guid: 38f43f3de37030f49983f164219a4e37,
@@ -34,3 +25,16 @@ MonoBehaviour:
     GameObject: {fileID: 6615910063189652245, guid: 5de3b85f15a944545a8bb03798e1c9f4,
       type: 3}
   Pool: {fileID: 8083583914371095536, guid: 5aaada4375363ee4bb74bd34f6eddd51, type: 3}
+  BuildingOnControl: {fileID: 0}
+  BuildingTemplate: {fileID: 6433850267492192932, guid: a366816851556a0459076570754466b9,
+    type: 3}
+  BuildingSolid: {fileID: 8272792059329085670, guid: 11e1129c2828b754a8352e0ee9582e19,
+    type: 3}
+  Buildings:
+  - {fileID: 11400000, guid: d4d44a58303f080428805143979afaaa, type: 2}
+  - {fileID: 11400000, guid: 7dfc125659713c04c8488feb16db086d, type: 2}
+  - {fileID: 11400000, guid: 1922b8e983fe9204aafdf95b9e6738e8, type: 2}
+  - {fileID: 11400000, guid: 7fcc7ace134be544494bf0cbdd5b9bbb, type: 2}
+  - {fileID: 11400000, guid: 66859d28892ec2e4ea75338bd2d82e9a, type: 2}
+  MilitaryUnit: {fileID: 8211858485336378538, guid: 4ef798119e6ed594b9b285b6b6fec9a5,
+    type: 3}

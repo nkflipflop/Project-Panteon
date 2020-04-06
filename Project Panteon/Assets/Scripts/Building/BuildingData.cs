@@ -6,9 +6,12 @@ using UnityEngine;
 public class BuildingData : ScriptableObject
 {
     public string BuildingName;
-    public Sprite BuildingSprite;    
+    public Sprite BuildingImage;
+    public Sprite BuildingIcon;    
     public Color BuildingColor = Color.white;
     public bool CanProductUnit = false;
+    public MilitaryUnitData[] ProductionUnits;
+
     public int Rows = 1;
     public int Cols = 1;
 

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class InformationMenu : MonoBehaviour
 {
+    public Image BuildingImage; 
     public Text BuildingName;       // Header of UI
 
     private GameManager _manager;   // Gane Manager
@@ -28,6 +29,20 @@ public class InformationMenu : MonoBehaviour
 
         _selectedBuilding = building;
         _selectedBuilding.Selected();
-        BuildingName.text = _selectedBuilding.name;
+        BuildingData buildingData = _manager.GameConfig.Buildings[_selectedBuilding.BuildingIndex];
+        BuildingName.text = buildingData.name;
+        BuildingImage.sprite = buildingData.BuildingImage;
+
+        //MilitaryUnit soldier = Instantiate(_manager.GameConfig.MilitaryUnit, Vector3.zero, Quaternion.identity);
+        // soldier.ProduceUnit(buildingData.ProductionUnits[0]);
+        //foreach(var unit in buildingData.ProductionUnits)
+    }
+
+    public void DeselectBuilding() {
+        this.gameObject.SetActive(false);
+        if(_selectedBuilding)
+            _selectedBuilding.Deselect();
+        _selectedBuilding = null;
+
     }
 }

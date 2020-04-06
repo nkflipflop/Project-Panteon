@@ -9,18 +9,22 @@ public class GameConfigData : ScriptableObject
         public int MapGridWidth;
         public int MapGridHeight;
 
-        // Buildings
-        public BuildingMain BuildingOnControl;      // Building that controlling currently
-        public GameObject BuildingTemplate;         // Template to place selected building
-        public GameObject BuildingSolid;            // Building that will be placed
-        public BuildingData[] Buildings;            // All distinct buildings on the game
-        
         // Cell Prefabs
         public CellTypePrefabPair[] CellPrefabs;    // Which object belongs to which type
         private Dictionary<CellType, GameObject> _cellTypePrefabMap;
 
         // Pool
         public Pool Pool;                           // Pool of Production Menu
+
+        // Buildings
+        public BuildingMain BuildingOnControl;      // Building that controlling currently
+        public GameObject BuildingTemplate;         // Template to place selected building
+        public GameObject BuildingSolid;            // Building that will be placed
+        public BuildingData[] Buildings;            // All distinct buildings on the game
+        
+        // Military Units
+        public MilitaryUnit MilitaryUnit; 
+
 
         private void Setup() {
             _cellTypePrefabMap = new Dictionary<CellType, GameObject>();

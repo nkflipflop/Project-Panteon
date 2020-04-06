@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class PoolCell : MonoBehaviour
+public class ProductionMenuCell : MonoBehaviour
 {
     public GameConfigData GameConfig;   // Game Config
 
@@ -27,7 +27,7 @@ public class PoolCell : MonoBehaviour
             _index = index;
             BuildingData building = GameConfig.Buildings[_index];
             text.text = building.BuildingName;
-            image.sprite = building.BuildingSprite;
+            image.sprite = building.BuildingIcon;
         }
         else {
             _index = buildingCount;
