@@ -3,32 +3,69 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class BuildingSolid : MonoBehaviour {
-    public Transform CellContainer;     // All Cell objects of the building
+public class BuildingSolid : BuildingMain 
+{
+    public Color SelectedColor;
 
-    private GameConfigData _GameConfig; // Game Config
-    private List<Cell> _buildingCells;  // All Cells of the building 
-    private BuildingData _buildingData; // Building information on Matrix form 
+    private Transform _spawnPoint;
 
-    // Creates the placed building 
-    public void CreateBuilding(BuildingData buildingData, GameConfigData GameConfig) {
-        _GameConfig = GameConfig;
-        _buildingData = buildingData;
-
-        // Setting name of objet as building name
-        name = _buildingData.name;
-
-        // Filling the building with solid cell
-        _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Solid), _GameConfig, CellContainer);
+    public override void Created() {
+        transform.parent = _manager.GameBoard.transform.GetChild(1);
+        // Filling the building with solidCells
+        _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Solid), _manager.GameConfig, CellContainer);
 
         // Coloring the cells with color of selected building
-        foreach (var buildingCell in _buildingCells)
-            buildingCell.GetComponent<SpriteRenderer>().color = _buildingData.buildingColor;
+        Deselect();
+
+        // Creating spawnPoint
+        if (_buildingData.CanProductUnit)
+            CreateSpawnPoint();
     }
 
-    public void Selected() {
-        // Coloring the cells with color of selected building
+    // Created spawnPoint on available space
+    private void CreateSpawnPoint() {
+        Vector3 pos = _buildingCells[_buildingCells.Capacity - 1].transform.position;
+        
+        // Spawn position of unit, when created
+        pos.x += 2;
+        _spawnPoint = new GameObject().transform;
+        _spawnPoint.position = pos;
+        _spawnPoint.transform.parent = transform;    
+        _spawnPoint.name = "Spawn Point";
+    }
+
+    // Requests Selection for this building from InformationMenu
+    public void CallBaseBuilding() {
+        _manager.InformationMenu.RequestSelection(this);
+    }
+
+    // When the building is selected to get information
+    public BuildingData Selected() {
+        // Coloring the cells with selection color
         foreach (var buildingCell in _buildingCells)
-            buildingCell.GetComponent<SpriteRenderer>().color = Color.black;
+            buildingCell.GetComponent<SpriteRenderer>().color = SelectedColor;
+
+        return _buildingData;
+    }
+
+
+    // When the building is deselected
+    public void Deselect() {
+        // Coloring the cells with color of building
+        foreach (var buildingCell in _buildingCells)
+            buildingCell.GetComponent<SpriteRenderer>().color = _buildingData.BuildingColor;
+    }
+
+    // Spawns new unit on spawnPoint
+    public void SpawnUnit(MilitaryUnit militaryUnit, Transform parent) {
+        // Positioning on an interval
+        Vector3 spawnPosition = _spawnPoint.position;
+        spawnPosition.x += Random.Range(-.5f, .5f);
+        spawnPosition.y += Random.Range(-.5f, .5f);
+
+        // Creating the unit
+        MilitaryUnit unit = Instantiate(militaryUnit, spawnPosition, Quaternion.identity, parent);
+        unit.name = militaryUnit.name;
+        unit.gameObject.SetActive(true);
     }
 }
