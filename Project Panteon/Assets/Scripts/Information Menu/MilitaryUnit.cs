@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class MilitaryUnit : MonoBehaviour
 {
+    public SpriteRenderer Sprite;
+
     private MilitaryUnitData _militaryUnitData;
 
-    // Start is called before the first frame update
-    public void ProduceUnit(MilitaryUnitData militaryUnitData) {
+    public void InitMilitaryUnit(MilitaryUnitData militaryUnitData) {
         _militaryUnitData = militaryUnitData;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        name = militaryUnitData.name;
+        Sprite.color = militaryUnitData.UnitColor;
+   }
 }

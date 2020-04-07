@@ -17,13 +17,15 @@ public class GameConfigData : ScriptableObject
         public Pool Pool;                           // Pool of Production Menu
 
         // Buildings
+        [HideInInspector]
         public BuildingMain BuildingOnControl;      // Building that controlling currently
         public GameObject BuildingTemplate;         // Template to place selected building
         public GameObject BuildingSolid;            // Building that will be placed
         public BuildingData[] Buildings;            // All distinct buildings on the game
+
+        public MilitaryUnit MilitaryUnit;
         
-        // Military Units
-        public MilitaryUnit MilitaryUnit; 
+
 
 
         private void Setup() {

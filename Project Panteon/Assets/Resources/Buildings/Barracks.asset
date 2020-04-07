@@ -19,7 +19,7 @@ MonoBehaviour:
   CanProductUnit: 1
   ProductionUnits:
   - {fileID: 11400000, guid: 4a0febd1d27c983449c1c67eed5712b8, type: 2}
-  - {fileID: 11400000, guid: ac703bfbe7de9624b9e0fbf66e507be9, type: 2}
   - {fileID: 11400000, guid: 715f0adda7df4db418bccc5195042c0b, type: 2}
+  - {fileID: 11400000, guid: ac703bfbe7de9624b9e0fbf66e507be9, type: 2}
   Rows: 4
   Cols: 4

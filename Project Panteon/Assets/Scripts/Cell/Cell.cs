@@ -22,6 +22,7 @@ public class Cell : MonoBehaviour
         BuildingSolid building = transform.parent.parent.GetComponent<BuildingSolid>();
         building.CallBaseBuilding();
     }
+    
 
     // When there is no collision with cell
     public void SetValid() {
