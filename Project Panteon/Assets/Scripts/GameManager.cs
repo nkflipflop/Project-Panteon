@@ -9,10 +9,13 @@ public class GameManager : MonoBehaviour
     public GameBoard GameBoard;             // Game Board
     public ProductionMenu ProductionMenu;   // Production Menu
     public InformationMenu InformationMenu; // Information Menu
+    public SelectionManager SelectionManager;
 
-    private void Start() {
-        GameBoard.CreateGrid();                     // Creating the game board
-        ProductionMenu.InitProductionMenu(this);    // Initing
-        InformationMenu.InitInformationMenu(this);  // Initing
+    private void Awake() {
+        GameBoard.InitGameBoard(this);                  // Initing the game board
+        ProductionMenu.InitProductionMenu(this);        // Initing
+        SelectionManager.InitSelectionManager(this);    // Initing
+        InformationMenu.InitInformationMenu(this);      // Initing
+
     }
 }

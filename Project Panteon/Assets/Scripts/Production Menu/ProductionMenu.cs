@@ -17,18 +17,16 @@ public class ProductionMenu : MonoBehaviour
 
     // Creates BuildingTemplate to place
     public void CreateBuildingTemplate(int buildingIndex) {
-        // Deselecting buildingSolid selected for information, if there is
-        _manager.InformationMenu.DeselectBuilding();
-        
         // Destroying buildingTempla selected to place, if there is
-        if (_buildingObject)
+        if (_buildingObject){
+            _building.SelfDestruction();
             Destroy(_buildingObject);
+        }
 
         // Creating a building gameObject
         _buildingObject = Instantiate(_manager.GameConfig.BuildingTemplate, Vector3.back, Quaternion.identity) as GameObject;
         _building = _buildingObject.GetComponent<BuildingTemplate>(); 
         _building.CreateBuilding(buildingIndex, _manager);
-        _manager.GameConfig.BuildingOnControl = _building;
     }
 
     // Enables placig action, when mouse is in gameBoard

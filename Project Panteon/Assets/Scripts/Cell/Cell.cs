@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Cell types for different objects
 public enum CellType {
@@ -16,13 +14,6 @@ public class Cell : MonoBehaviour
     private void Start() {
         _renderer = transform.GetComponent<SpriteRenderer>();
     }
-
-    // Calls the root (belonging building) of the cell
-   private void OnMouseDown() {
-        BuildingSolid building = transform.parent.parent.GetComponent<BuildingSolid>();
-        building.CallBaseBuilding();
-    }
-    
 
     // When there is no collision with cell
     public void SetValid() {

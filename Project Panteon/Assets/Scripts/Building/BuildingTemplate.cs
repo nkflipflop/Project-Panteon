@@ -11,6 +11,8 @@ public class BuildingTemplate : BuildingMain
     
     
     public override void Created() {
+        // Adjusting placing listener
+        _manager.SelectionManager.PlacingOperation += Placing;
         // Filling the building with tempCells
         _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Temp), _manager.GameConfig, CellContainer);
     }
@@ -36,11 +38,12 @@ public class BuildingTemplate : BuildingMain
         }
 
         // Destroys thi object, When Mouse right-click
-        if (Input.GetMouseButtonDown(1)) {
-            Destroy(gameObject);
-            _manager.GameConfig.BuildingOnControl = null;
-        }
+        if (Input.GetMouseButtonDown(1))
+            SelfDestruction();
     }
+
+    private void Placing() { }
+    
     
     // Checks whether there is colision with another building
     private bool CheckPlace() {
@@ -49,7 +52,7 @@ public class BuildingTemplate : BuildingMain
             RaycastHit2D hit = Physics2D.Raycast(buildingCell.transform.position, Vector3.forward, Mathf.Infinity);
             buildingCell.SetValid();                    
             
-            if (hit.collider != null && hit.collider.CompareTag("Solid")) {
+            if (hit.collider && hit.collider.CompareTag("Solid")) {
                 buildingCell.SetInvalid();    
                 canPlace = false;
             }
@@ -57,6 +60,11 @@ public class BuildingTemplate : BuildingMain
         return canPlace;
     }
 
+    public void SelfDestruction() {
+        _manager.SelectionManager.PlacingOperation -= Placing;
+        Destroy(gameObject);
+    }
+    
     // Places a building into current mouse position
     public void CreateBuildingSolid() {
         Vector3 pos = transform.position;
