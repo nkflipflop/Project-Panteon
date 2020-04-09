@@ -14,6 +14,8 @@ public class InformationMenu : MonoBehaviour
 
 
     [SerializeField]
+    protected RectTransform _header;       // Rectangle of Content object of ScrollBar
+    [SerializeField]
     protected RectTransform _content;       // Rectangle of Content object of ScrollBar
     private GameManager _manager;           // Gane Manager
     private List<MilitaryUnitData> _productionUnits;// Unit object samples of selected building to spawn
@@ -23,7 +25,8 @@ public class InformationMenu : MonoBehaviour
     // Inits the menu
     public void InitInformationMenu(GameManager manager) {
         _manager = manager;
-        this.gameObject.SetActive(false);
+        _header.gameObject.SetActive(false);
+        _content.gameObject.SetActive(false);
     }
 
     // Shows information of the selected building on the menu
@@ -33,7 +36,7 @@ public class InformationMenu : MonoBehaviour
             RemoveInformation();
 
         // Unhiding the information menu
-        this.gameObject.SetActive(true);
+        _header.gameObject.SetActive(true);
         _content.gameObject.SetActive(false);
 
         // Assigning newly selected building
@@ -45,34 +48,44 @@ public class InformationMenu : MonoBehaviour
 
         // Listing the units
         if (_buildingData.CanProductUnit)
-            ListUnits();
+            ShowUnitsInfo(null);
     }
 
-    // Listing productable units on information panel
-    private void ListUnits(){  
+    // Listing units on information panel
+    public void ShowUnitsInfo(List<string> unitList) {
         // Unhiding the production content
         _content.gameObject.SetActive(true);
-        _productionUnits = new List<MilitaryUnitData>();
 
         // Listing the units
         int unitCount = _buildingData.ProductionUnits.Length;
         for (int i = 0; i < unitCount; i++) {
             var unitData = _buildingData.ProductionUnits[i];
-            
-            // Listing military units on information bar
-            InformationMenuCell cell =  Instantiate(InformationMenuCell, Vector3.zero, Quaternion.identity, _content.transform);
-            cell.SetUnitCell(i, unitData.UnitIcon, this);
+            int unitAmount = 1;
 
-            // Adding unit data to list
-            _productionUnits.Add(unitData);
+            // If selected units wanted 
+            if (unitList != null){
+                unitAmount = 0;
+                _header.gameObject.SetActive(false);
+                foreach (var unit in unitList) {
+                    if (unit == unitData.name)
+                        unitAmount++;
+                }
+            }
+
+            if (unitAmount > 0) {
+                // Listing military units on information bar
+                InformationMenuCell cell =  Instantiate(InformationMenuCell, Vector3.zero, Quaternion.identity, _content.transform);
+                cell.SetUnitCell(i, unitData.UnitIcon, unitAmount, this);
+            }
         }
+
     }
 
     // Deselects current selectedBuilding
     public void RemoveInformation() {
         // Hiding Objects
-        this.gameObject.SetActive(false);
-        _content.gameObject.SetActive(true);
+        _header.gameObject.SetActive(false);
+        _content.gameObject.SetActive(false);
 
         // Destroying Old data
         foreach (Transform child in _content.transform)

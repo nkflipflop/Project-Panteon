@@ -14,8 +14,7 @@ public class MilitaryUnit : MonoBehaviour
 
 	[SerializeField] 
     private float _speed = 1f;              // speed of the unit
-	private Vector2 _targetPos;             // target given
-    private bool _startAStar;
+	private Vector2 _targetPos;             // target given 
     private bool _fromArmy;
 
 
@@ -53,12 +52,10 @@ public class MilitaryUnit : MonoBehaviour
            // AStar.GoalPos = (Vector2Int) transform.position;
 	
 		if (AStar.Path != null && AStar.Path.Count > 0) {
-			if (_targetPos == new Vector2Int(1000, 0) || transform.position == (Vector3) _targetPos) {
+			if (_targetPos == new Vector2Int(1000, 0) || transform.position == (Vector3) _targetPos)
 				_targetPos = AStar.Path.Pop();
-			}
 		}
         else if(AStar.Path.Count == 0){
-            _startAStar = false;
             enabled = false;
         }
 		if (_targetPos != new Vector2Int(1000, 0)) 
@@ -110,7 +107,5 @@ public class MilitaryUnit : MonoBehaviour
 		AStar.GoalPos = targetPos;
         AStar.Path = null;
         AStar.PathFinding(_manager.GameBoard);
-		
-        _startAStar = true;
     }
 }

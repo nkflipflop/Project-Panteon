@@ -4,9 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Building
   - Solid
-  - Grid
+  - Unit
   layers:
   - Default
   - TransparentFX

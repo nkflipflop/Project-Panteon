@@ -112,6 +112,7 @@ public class SelectionController : MonoBehaviour
             // If there are units
             SelectUnits?.Invoke(min, max, _selectedUnits);
             _boxSelection = false;
+            ShowUnitsInfo();
         }
         // If selection made by left mouse click
         else {
@@ -134,7 +135,19 @@ public class SelectionController : MonoBehaviour
             else {
                 // Publishing selection request to units 
                 SelectUnit?.Invoke(hit, _selectedUnits);
+                ShowUnitsInfo();
             }
+        }
+    }
+
+    // Shows information of the units 
+    private void ShowUnitsInfo() {
+        if (_selectedUnits.Count > 0) {
+            List<string> unitList = new List<string>();
+            foreach (var item in _selectedUnits)
+                unitList.Add(item.name);
+
+            _informationMenu.ShowUnitsInfo(unitList);
         }
     }
 

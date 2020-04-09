@@ -354,12 +354,12 @@ RectTransform:
   - {fileID: 500192124}
   - {fileID: 1396545679}
   m_Father: {fileID: 1643638332}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -90}
-  m_SizeDelta: {x: 270, y: 180}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &193947962
 MonoBehaviour:
@@ -781,12 +781,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1643638332}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 75}
-  m_SizeDelta: {x: 270, y: 150}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &717529289
 MonoBehaviour:
@@ -838,7 +838,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: 10
     m_Right: 10
-    m_Top: 20
+    m_Top: 10
     m_Bottom: 10
   m_ChildAlignment: 4
   m_Spacing: 10
@@ -1313,15 +1313,15 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 717529288}
   - {fileID: 193947961}
+  - {fileID: 717529288}
   m_Father: {fileID: 1307885990}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -185, y: -240}
-  m_SizeDelta: {x: 270, y: 320}
+  m_SizeDelta: {x: 270, y: 330}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1643638333
 MonoBehaviour:
@@ -1330,7 +1330,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1643638331}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1297475563, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -1340,10 +1340,10 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 7
-  m_Spacing: -3.4
+  m_ChildAlignment: 1
+  m_Spacing: 2
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 0
+  m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 0
 --- !u!222 &1643638334
@@ -1371,6 +1371,7 @@ MonoBehaviour:
   InformationMenuCell: {fileID: 114785915150610540, guid: c31adb9ff8bd79947bdaa48e650a6755,
     type: 3}
   SpawnParent: {fileID: 1921815158}
+  _header: {fileID: 193947961}
   _content: {fileID: 717529288}
 --- !u!1 &1921815157
 GameObject:
