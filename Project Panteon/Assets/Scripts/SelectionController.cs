@@ -95,6 +95,7 @@ public class SelectionController : MonoBehaviour
         SelectionBox.sizeDelta = new Vector2(Mathf.Abs(width), Mathf.Abs(height));
         SelectionBox.anchoredPosition = _startPos + new Vector2(width / 2, height / 2);
 
+      //  SelectionBox.rect.Set(5, 5, 5, 5);
         // If area is greater then box selection true 
         float area = Mathf.Abs(width * height);
         return area > 500 ? true : false;
@@ -171,9 +172,16 @@ public class SelectionController : MonoBehaviour
     // Marks the target position
     IEnumerator TargetMarker(Vector3 pos) {
         pos.z = 0;
-        GameObject marker = Instantiate(_manager.GameConfig.Marker, pos, Quaternion.identity);
-		yield return new WaitForSeconds(.75f);
-        Destroy(marker);
+        SpriteRenderer marker = Instantiate(_manager.GameConfig.Marker, pos, Quaternion.identity);
+        while(marker.color.a < 1) {
+    		yield return new WaitForSeconds(.01f);
+            marker.color += new Color(0, 0, 0, .2f);
+        }
+        while(marker.color.a > 0) {
+    		yield return new WaitForSeconds(.05f);
+            marker.color -= new Color(0, 0, 0, .2f);
+        }
+        Destroy(marker.gameObject);
 	}
 
 

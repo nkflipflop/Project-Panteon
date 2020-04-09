@@ -28,3 +28,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 66859d28892ec2e4ea75338bd2d82e9a, type: 2}
   MilitaryUnit: {fileID: 114930066954694020, guid: 4ef798119e6ed594b9b285b6b6fec9a5,
     type: 3}
+  Marker: {fileID: 6153743949037867514, guid: 76f63f7cf27c48e4084a1b66655ad828, type: 3}

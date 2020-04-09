@@ -39,6 +39,8 @@ public class AStarPathfinding : MonoBehaviour
 
 			_path = GeneratePath(Current);
 		}
+		if(_path == null)
+		Debug.Log("No Way!");
 	}
 
 	// Looks for neigbors available
