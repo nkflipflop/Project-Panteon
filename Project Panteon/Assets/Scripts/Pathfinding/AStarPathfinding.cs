@@ -49,9 +49,11 @@ public class AStarPathfinding : MonoBehaviour
 				if (x != 0 || y != 0) {		// skipping the parent node
 					Vector2Int neighborPos = new Vector2Int(parentPos.x + x, parentPos.y + y);
 					
-					if (neighborPos != StartPos && _gameBoard.GridContent[neighborPos.x, neighborPos.y] == 1) {
-						Node neighbor = GetNode(neighborPos);
-						neighbors.Add(neighbor);
+					if (!IsOutOfGrid(neighborPos)){
+						if (neighborPos != StartPos && _gameBoard.GridContent[neighborPos.x, neighborPos.y] == 1) {
+							Node neighbor = GetNode(neighborPos);
+							neighbors.Add(neighbor);
+						}
 					}
 				}
 			}
@@ -59,6 +61,20 @@ public class AStarPathfinding : MonoBehaviour
 
 		return neighbors;
 	}
+
+    // Checking if the template in grid area
+    private bool IsOutOfGrid(Vector2 pos) {
+        if (pos.x < 0 || pos.y < 0)
+            return true;
+        
+        float maxX = _gameBoard.Dimensions[0] - 1;
+        float maxY = _gameBoard.Dimensions[1] - 1;
+
+        if(pos.x > maxX || pos.y > maxY)
+            return true;
+
+        return false;
+    }
 
 	// Rating the selected neigbors
 	private void ExamineNeighbors(List<Node> neighbors, Node current) {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -160,8 +161,20 @@ public class SelectionController : MonoBehaviour
 
             // Publishing the order
             AStarOrder?.Invoke(GoalPos);
+
+            // Marking Target
+            StartCoroutine(TargetMarker(targetPos));
+            
         }
     }
+
+    // Marks the target position
+    IEnumerator TargetMarker(Vector3 pos) {
+        pos.z = 0;
+        GameObject marker = Instantiate(_manager.GameConfig.Marker, pos, Quaternion.identity);
+		yield return new WaitForSeconds(.75f);
+        Destroy(marker);
+	}
 
 
     public void MouseOnHUD () {

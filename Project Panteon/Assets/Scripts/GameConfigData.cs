@@ -17,4 +17,6 @@ public class GameConfigData : ScriptableObject
 
         public MilitaryUnit MilitaryUnit;       // Military unit object
 
+        public GameObject Marker;   // Target marker
+
     }

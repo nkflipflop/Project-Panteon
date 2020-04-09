@@ -15,7 +15,6 @@ public class MilitaryUnit : MonoBehaviour
 	[SerializeField] 
     private float _speed = 1f;              // speed of the unit
 	private Vector2 _targetPos;             // target given 
-    private bool _fromArmy;
 
 
     public void InitMilitaryUnit(MilitaryUnitData militaryUnitData, GameManager manager) {
@@ -38,37 +37,23 @@ public class MilitaryUnit : MonoBehaviour
         Movement();
 	}
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.CompareTag("Unit")) {
-//            StartCoroutine(SlowDown(other.transform.position));
-        }
-    }
 
     // Moves the unit
 	private void Movement() {
-		Vector2 _distanceBtwTarget = AStar.GoalPos - (Vector2) transform.position;
-
-	//	if (_distanceBtwTarget.magnitude < 0.6f && _fromArmy)
-           // AStar.GoalPos = (Vector2Int) transform.position;
-	
 		if (AStar.Path != null && AStar.Path.Count > 0) {
 			if (_targetPos == new Vector2Int(1000, 0) || transform.position == (Vector3) _targetPos)
 				_targetPos = AStar.Path.Pop();
 		}
-        else if(AStar.Path.Count == 0){
+        else /*if(AStar.Path.Count == 0)*/{
             enabled = false;
         }
+
+        // moving the soldier towards to target
 		if (_targetPos != new Vector2Int(1000, 0)) 
-			transform.position = Vector2.MoveTowards(transform.position, _targetPos, Time.deltaTime * _speed);      // moving the soldier towards to target
-        
+			transform.position = Vector2.MoveTowards(transform.position, _targetPos, Time.deltaTime * _speed);      
 
 	}
 
-    IEnumerator SlowDown() {
-        //Vector3 away = transform.position - fellowSoldier;
-        //transform.position -= away;
-		yield return new WaitForSeconds(1022f);
-	}
 
     // Selection Listener
     private void SelectUnitSubsc(RaycastHit2D hit, List<MilitaryUnit> selectedUnits) {
