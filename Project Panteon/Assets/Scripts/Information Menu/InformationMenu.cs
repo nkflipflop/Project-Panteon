@@ -14,10 +14,11 @@ public class InformationMenu : MonoBehaviour
 
 
     [SerializeField]
-    protected RectTransform _content;           // Rectangle of Content object of ScrollBar
-    private GameManager _manager;               // Gane Manager
+    protected RectTransform _content;       // Rectangle of Content object of ScrollBar
+    private GameManager _manager;           // Gane Manager
     private List<MilitaryUnitData> _productionUnits;// Unit object samples of selected building to spawn
     private BuildingData _buildingData;     // BuildingData on showing 
+    
     
     // Inits the menu
     public void InitInformationMenu(GameManager manager) {

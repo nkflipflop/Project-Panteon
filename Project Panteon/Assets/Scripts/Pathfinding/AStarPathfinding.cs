@@ -1,21 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class AStarPathfinding : MonoBehaviour 
 {
-	private GameBoard _gameBoard;
-	private HashSet<Node> _openList, _closedList;
-	private Stack<Vector2Int> _path;
-	private Dictionary<Vector2Int, Node> _allNodes = new Dictionary<Vector2Int, Node>();
-	public Vector2Int StartPos, GoalPos;
-	public Node Current;      // current position of the enemy
-	public Stack<Vector2Int> Path { 
+	public Vector2Int StartPos, GoalPos;// Start and Goal positions
+	public Node Current;      			// current position of the soldier
+	public Stack<Vector2Int> Path {		// Path that must be completed
 		get { return _path; } 
 		set { _path = value; } 
 	}
+	private GameBoard _gameBoard;		// GameBoard that holds the grid
+	private HashSet<Node> _openList, _closedList;
+	private Stack<Vector2Int> _path;	// Path
+	private Dictionary<Vector2Int, Node> _allNodes = new Dictionary<Vector2Int, Node>();
 
+	// Inits
 	private void Initialize() {
 		Current = GetNode(StartPos);
 
@@ -41,6 +41,7 @@ public class AStarPathfinding : MonoBehaviour
 		}
 	}
 
+	// Looks for neigbors available
 	private List<Node> FindNeighbors(Vector2Int parentPos) {
 		List<Node> neighbors = new List<Node>();
 		for (int x = -1; x <= 1; x++) {
@@ -59,6 +60,7 @@ public class AStarPathfinding : MonoBehaviour
 		return neighbors;
 	}
 
+	// Rating the selected neigbors
 	private void ExamineNeighbors(List<Node> neighbors, Node current) {
 		for (int i = 0; i < neighbors.Count; i++) {
 			Node neighbor = neighbors[i];
@@ -81,6 +83,7 @@ public class AStarPathfinding : MonoBehaviour
 		}
 	}
 
+	// Gives rate
 	private void CalculateValues(Node parent, Node neighbor, int cost) {
 		neighbor.Parent = parent;
 

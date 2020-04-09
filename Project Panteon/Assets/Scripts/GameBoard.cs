@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GameBoard : MonoBehaviour {
-
-    public Transform Grid;          // All Cells of the grid
+public class GameBoard : MonoBehaviour 
+{
     public int[,] GridContent;      // Content of each cell
     public Vector2 Dimensions 
     {   
@@ -14,7 +11,6 @@ public class GameBoard : MonoBehaviour {
     private GameManager _manager;   // Game Manager        
     private int _gridWidth;         // Columns of the grid
     private int _gridHeight;        // Rows of the grid
-
 
 
     // Inits the Game Board
@@ -34,14 +30,5 @@ public class GameBoard : MonoBehaviour {
         }
         
         //var cells = CellHelper.SpawnCells(Dimensions, _manager.GameConfig.Cell, Grid);
-    }
-    
-    public void print(){
-        for (var y = 0; y < _gridHeight; y++) {
-            for (var x = 0; x < _gridWidth; x++){
-                if (GridContent[x, y] == 0)
-                    Debug.Log(x + ", " + y + ": " + GridContent[x, y]);
-            }
-        }
     }
 }

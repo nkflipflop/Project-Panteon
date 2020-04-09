@@ -3,21 +3,21 @@ using System.Collections.Generic;
 
 public class Pool : MonoBehaviour 
 {
-    public string poolName;                                         // Pool Name
-    public GameObject poolCell;                                     // One cell of the pool
+    public GameObject PoolCell;                                     // One cell of the pool
 
-    private GameObject _parent;                                     // Root for unused obj
     private Stack<GameObject> _poolStack = new Stack<GameObject>(); // Stack for pool
-    private int _poolObjectCount = 60;
+    private GameObject _parent;                                     // Root for unused obj
+    private int _poolObjectCount = 40;
+    
 
     // Initiliazes the pool with given name
     public void InitPool(Transform parent) {
-        _parent = new GameObject(poolName);
+        _parent = new GameObject("Pool");
         _parent.transform.SetParent(parent);
 
         // Filling the pool with poolCellPrefab object
         for (int i = 0; i < _poolObjectCount; i++)
-            PushObject(GameObject.Instantiate(poolCell));
+            PushObject(GameObject.Instantiate(PoolCell));
     }
 
     // Returns object to the pool
@@ -27,7 +27,7 @@ public class Pool : MonoBehaviour
     }
 
     // Pushes object to the pool stack
-    public void PushObject(GameObject poolObject) {
+    private void PushObject(GameObject poolObject) {
         poolObject.SetActive(false);
         poolObject.name = "Pool Cell";
         _poolStack.Push(poolObject);

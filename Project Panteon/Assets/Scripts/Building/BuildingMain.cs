@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BuildingMain : MonoBehaviour
 {
@@ -19,5 +17,5 @@ public class BuildingMain : MonoBehaviour
         Created();
     }
 
-    public virtual void Created(){}
+    protected virtual void Created(){}
 }

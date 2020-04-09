@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectionManager : MonoBehaviour
+public class SelectionController : MonoBehaviour
 {
     // AStar Trigger 
     public event Action<Vector2Int> AStarOrder;

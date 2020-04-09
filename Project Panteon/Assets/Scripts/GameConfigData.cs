@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "GameConfig", menuName = "Game Config")]
 public class GameConfigData : ScriptableObject 
@@ -9,7 +7,7 @@ public class GameConfigData : ScriptableObject
         public int MapGridWidth;
         public int MapGridHeight;
 
-        public Cell Cell;           // Cell Prefab
+        public Cell Cell;           // Cell Prefab for buildingTemplate
         public Pool Pool;           // Pool of Production Menu
 
         // Buildings

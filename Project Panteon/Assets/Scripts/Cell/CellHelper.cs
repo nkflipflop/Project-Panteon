@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public static class CellHelper {
+public static class CellHelper 
+{
     // Spawns cells into the given container in wanted cell type
     public static List<Cell> SpawnCells(Vector2 dimensions, Cell cell, Transform container) {
         var cellList = new List<Cell>();
@@ -10,9 +10,6 @@ public static class CellHelper {
         // Dimensions(columns, rows)  of the wanted object
         var width = dimensions[0];
         var height = dimensions[1];
-        
-        // Position of the first cell
-        //var startingPoint = Vector2.zero ;//- new Vector2 ((width - 1 ) / 2f, (height - 1 ) / 2f);
         
         // Container is being filled with cell
         for (var y = 0; y < height; y++) {

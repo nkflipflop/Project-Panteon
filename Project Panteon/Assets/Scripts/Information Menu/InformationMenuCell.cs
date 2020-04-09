@@ -1,13 +1,12 @@
-﻿using System;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine;
 
 public class InformationMenuCell : MonoBehaviour
 {
-    public Image UnitIcon;
+    public Image UnitIcon;  // Icon of the unit
     
-    private InformationMenu _informationMenu;
     private int _unitIndex;
+    private InformationMenu _informationMenu;
 
     // Sets the Cell by icon of military unit
     public void SetUnitCell(int unitIndex, Sprite unitIcon, InformationMenu informationMenu) {

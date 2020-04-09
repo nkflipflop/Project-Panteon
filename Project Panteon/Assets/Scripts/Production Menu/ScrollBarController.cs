@@ -1,13 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.Events;
-using System.Collections;
 
 public class ScrollBarController : MonoBehaviour, IScrollHandler 
 {
-    public int totalCount = -1;             // Total count, negative means INFINITE mode
-
+    public int TotalCount = -1;             // Total count, negative means INFINITE mode
 
     private Pool _pool;                     // Pool for Production Menu
     private float _threshold = 1;
@@ -16,12 +13,13 @@ public class ScrollBarController : MonoBehaviour, IScrollHandler
     private bool _onTop = true;             // When index is zero in [0, positive infinite] interval
 
     [SerializeField]
-    protected int ScrollSpeed = 60;
+    protected int scrollSpeed = 60;         // Scrolling speed
     [SerializeField]
-    protected RectTransform _content;       // Rectangle of Content object of ScrollBar
+    protected RectTransform content;       // Rectangle of Content object of ScrollBar
+
     private RectTransform _viewRect {get { return (RectTransform) transform;}}  // Bound of children of Content object
-    private Vector3[] _corners = new Vector3[4];
     private int contentConstraintCount = 2; // Columns count for grid
+    private Vector3[] _corners = new Vector3[4];
     private ProductionMenu _productionMenu;
 
 
@@ -36,14 +34,14 @@ public class ScrollBarController : MonoBehaviour, IScrollHandler
         while (sizeFilled < _viewRect.rect.size.y)
             sizeFilled += NewItemAtEnd();
             
-        _content.anchoredPosition -= Vector2.up * ScrollSpeed;
+        content.anchoredPosition -= Vector2.up * scrollSpeed;
     }
 
     // When Scrolling
-    public  void OnScroll(PointerEventData data) {
+    public void OnScroll(PointerEventData data) {
         // Controlling very top of data (0 point)
         if (!_onTop || data.scrollDelta.y < 0)
-            _content.anchoredPosition -= (data.scrollDelta * ScrollSpeed);
+            content.anchoredPosition -= (data.scrollDelta * scrollSpeed);
             
         // Updating Content of ScrollBar, if it is possible
         _onTop = false;
@@ -98,7 +96,7 @@ public class ScrollBarController : MonoBehaviour, IScrollHandler
         var vMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
         var toLocal = _viewRect.worldToLocalMatrix;
-        _content.GetWorldCorners(_corners);
+        content.GetWorldCorners(_corners);
         for (int i = 0; i < 4; i++) {
             Vector3 v = toLocal.MultiplyPoint3x4(_corners[i]);
             vMin = Vector3.Min(v, vMin);
@@ -111,7 +109,7 @@ public class ScrollBarController : MonoBehaviour, IScrollHandler
     }
 
     // Adds two cells on the top,
-    protected float NewItemAtStart() {
+    private float NewItemAtStart() {
         // If very top of data
         if (_firstIndex - contentConstraintCount < 0) {
             _onTop = true;
@@ -128,43 +126,43 @@ public class ScrollBarController : MonoBehaviour, IScrollHandler
         }
 
         _threshold =  size * 1.5f;
-        _content.anchoredPosition +=  new Vector2 (0, size + 5);        
+        content.anchoredPosition +=  new Vector2 (0, size + 5);        
         return size;
     }
 
     // Deletes two cell from the top 
-    protected float DeleteItemAtStart() {
+    private float DeleteItemAtStart() {
         // If data count limited
-        if (( totalCount >= 0 && _lastIndex >= totalCount - 1) || _content.childCount == 0)
+        if ((TotalCount >= 0 && _lastIndex >= TotalCount - 1) || content.childCount == 0)
             return 0;
 
         // Adding cells
         float size = 0;
         for (int i = 0; i < contentConstraintCount; i++) {
-            RectTransform oldItem = _content.GetChild(0) as RectTransform;
+            RectTransform oldItem = content.GetChild(0) as RectTransform;
             size = LayoutUtility.GetPreferredHeight(oldItem);
             _pool.ReturnObjectToPool(oldItem);
             _firstIndex++;
         }
 
-        _content.anchoredPosition -=  new Vector2 (0, size + 5);
+        content.anchoredPosition -=  new Vector2 (0, size + 5);
         return size;
     }
 
     // Adds two cells on the end
-    protected float NewItemAtEnd() {
+    private float NewItemAtEnd() {
         // If data count limited
-        if (totalCount >= 0 && _lastIndex >= totalCount)
+        if (TotalCount >= 0 && _lastIndex >= TotalCount)
             return 0;
 
         // Adding cells
         float size = 0;
-        int count = contentConstraintCount - (_content.childCount % contentConstraintCount);
+        int count = contentConstraintCount - (content.childCount % contentConstraintCount);
         for (int i = 0; i < count; i++) {
             RectTransform newItem = BringCell(_lastIndex);
             size = LayoutUtility.GetPreferredHeight(newItem);
             _lastIndex++;
-            if (totalCount >= 0 && _lastIndex >= totalCount)
+            if (TotalCount >= 0 && _lastIndex >= TotalCount)
                 break;
         }
 
@@ -173,19 +171,19 @@ public class ScrollBarController : MonoBehaviour, IScrollHandler
     }
 
     // Deletes two cells from the end
-    protected float DeleteItemAtEnd() {
+    private float DeleteItemAtEnd() {
         // If data count limited
-        if ((totalCount >= 0 && _firstIndex < contentConstraintCount) || _content.childCount == 0)
+        if ((TotalCount >= 0 && _firstIndex < contentConstraintCount) || content.childCount == 0)
             return 0;
 
         // Adding cells
         float size = 0;
         for (int i = 0; i < contentConstraintCount; i++) {
-            RectTransform oldItem = _content.GetChild(_content.childCount - 1) as RectTransform;
+            RectTransform oldItem = content.GetChild(content.childCount - 1) as RectTransform;
             size = LayoutUtility.GetPreferredHeight(oldItem);
             _pool.ReturnObjectToPool(oldItem);
             _lastIndex--;
-            if (_lastIndex % contentConstraintCount == 0 || _content.childCount == 0)
+            if (_lastIndex % contentConstraintCount == 0 || content.childCount == 0)
                 break;  // Just delete the whole row
         }
         
@@ -195,7 +193,7 @@ public class ScrollBarController : MonoBehaviour, IScrollHandler
     // Brings a cell from the pool
     private RectTransform BringCell(int itemIndex) { 
         GameObject nextItem = _pool.PopObject();
-        nextItem.transform.SetParent(_content, false);
+        nextItem.transform.SetParent(content, false);
         nextItem.SetActive(true);
         nextItem.GetComponent<ProductionMenuCell>().CellIndexing(itemIndex, _productionMenu);
         return nextItem.transform as RectTransform;

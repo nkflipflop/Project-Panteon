@@ -1,43 +1,46 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class MilitaryUnit : MonoBehaviour
 {
-    public CircleCollider2D Collider;           // Unit Collider
-    public SpriteRenderer Sprite;               // Unit Sprite
-    public Color SelectedColor;
-    public AStarPathfinding aStar;           
+    public CircleCollider2D Collider;       // Unit Collider
+    public SpriteRenderer Sprite;           // Unit Sprite
+    public Color SelectedColor;             // When unit is selecte
+    public AStarPathfinding AStar;          // Path finder 
 
     private GameManager _manager;               // Game Manager
     private MilitaryUnitData _militaryUnitData; // Unit information
 
-	[SerializeField] private float _speed = 1f;
-	private Vector2 _targetPos;
-    private bool _start = false;
+	[SerializeField] 
+    private float _speed = 1f;              // speed of the unit
+	private Vector2 _targetPos;             // target given
+    private bool _startAStar;
 
 	// Update is called once per frame
 	void FixedUpdate() {
-        if(_start) 
+        // If there is a order given
+        if(_startAStar) 
     		Movement();
 	}
 
+    // Moves the unit
 	private void Movement() {
 		/*_distanceBtwTarget = _targetPos - transform.position;
 
 		if (_distanceBtwTarget.magnitude < 0.6f)
 			_targetPos = Target.transform.position;*/
 	
-		if (aStar.Path != null && aStar.Path.Count > 0) {
+		if (AStar.Path != null && AStar.Path.Count > 0) {
 
 			if (_targetPos == new Vector2Int(1000, 0) || transform.position == (Vector3) _targetPos) {
-				_targetPos = aStar.Path.Pop();
+				_targetPos = AStar.Path.Pop();
 			}
-		}else if(aStar.Path.Count == 0)
-            _start = false;
+		}
+        else if(AStar.Path.Count == 0)
+            _startAStar = false;
 
 		if (_targetPos != new Vector2Int(1000, 0)) 
-			transform.position = Vector2.MoveTowards(transform.position, _targetPos, Time.deltaTime * _speed);      // moving the enemy towards to target
+			transform.position = Vector2.MoveTowards(transform.position, _targetPos, Time.deltaTime * _speed);      // moving the soldier towards to target
 	}
 
     public void InitMilitaryUnit(MilitaryUnitData militaryUnitData, GameManager manager) {
@@ -83,13 +86,13 @@ public class MilitaryUnit : MonoBehaviour
 
     // AStar Listener
     private void StartAStar(Vector2Int targetPos) {
-        aStar.Current = null;
-		aStar.StartPos = new Vector2Int((int)transform.position.x, (int)transform.position.y);
-		aStar.GoalPos = targetPos;
-        aStar.Path = null;
-		_targetPos = new Vector2Int(1000, 0);        // null value
-        aStar.PathFinding(_manager.GameBoard);
+        _targetPos = new Vector2Int(1000, 0);        // null value
+        AStar.Current = null;
+		AStar.StartPos = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+		AStar.GoalPos = targetPos;
+        AStar.Path = null;
+        AStar.PathFinding(_manager.GameBoard);
 		
-        _start = true;
+        _startAStar = true;
     }
 }

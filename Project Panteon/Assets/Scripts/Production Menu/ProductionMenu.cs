@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ProductionMenu : MonoBehaviour
 {
-    public ScrollBarController ScrollBar;       // Produciton Menu
+    public ScrollBarController ScrollBar;   // Produciton Menu
 
-    private GameManager _manager;               // Game Manager
-    private GameObject _buildingObject;         // Current Building Template
-    private BuildingTemplate _building; // BuildingTemplate of _templateOnControl object
+    private GameManager _manager;           // Game Manager
+    private GameObject _buildingObject;     // Current Building Template
+    private BuildingTemplate _building;     // BuildingTemplate of _templateOnControl object
 
     public void InitProductionMenu(GameManager manager){
         _manager = manager;
@@ -31,11 +29,11 @@ public class ProductionMenu : MonoBehaviour
 
     // Enables placig action, when mouse is in gameBoard
     public void OnBoard(){
-        if (_building) _building.onBoard = true;
+        if (_building) _building.OnBoard = true;
     }
 
     // Avoids placig action, when mouse is in gameBoard
     public void OnHUD(){
-        if (_building) _building.onBoard = false;
+        if (_building) _building.OnBoard = false;
     }
 }

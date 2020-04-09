@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
 
 public class BuildingSolid : BuildingMain 
 {
@@ -12,12 +10,12 @@ public class BuildingSolid : BuildingMain
     private Transform _spawnPoint;  // Spaen Point
 
     // When Firstly created
-    public override void Created() {
+    protected override void Created() {
+        transform.parent = _manager.GameBoard.transform.GetChild(1);
+
         // Adding Listeners
         _manager.SelectionManager.SelectBuilding += SelectBuildingSubsc;
         _manager.SelectionManager.Deselect += DeselectMe;
-
-        transform.parent = _manager.GameBoard.transform.GetChild(1);
 
         AdjustCollider();   // Adjusting Collider
         DeselectMe();       // Coloring the cells with color of selected building
@@ -44,8 +42,8 @@ public class BuildingSolid : BuildingMain
         // Spawn position of unit, when created
         pos.x += 2;
         _spawnPoint = new GameObject().transform;
-        _spawnPoint.position = pos;
-        _spawnPoint.transform.parent = transform;    
+        _spawnPoint.parent = transform;  
+        _spawnPoint.position = pos;  
         _spawnPoint.name = "Spawn Point";
     }
 

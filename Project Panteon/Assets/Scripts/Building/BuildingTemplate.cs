@@ -1,18 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 // Building Template to place a new building
 public class BuildingTemplate : BuildingMain 
 {
-    public bool onBoard = false;    // True, when mouse on gameBoard
+    public bool OnBoard = false;    // True, when mouse on gameBoard
     public Transform CellContainer; // All Cell objects of the building
 
-    private List<Cell> _buildingCells;    // All Cells of the building 
+    private List<Cell> _buildingCells;  // All Cells of the building 
     private bool _canPlace;         // True, when the building can place
     
     
-    public override void Created() {
+    protected override void Created() {
         // Adjusting placing listener
         _manager.SelectionManager.PlacingOperation += Placing;
         // Filling the building with tempCells
@@ -50,7 +49,7 @@ public class BuildingTemplate : BuildingMain
         // When Mouse left-click
         if (Input.GetMouseButtonDown(0)) {
             // If there is no collision on grid with another building
-            if (_canPlace && onBoard) { 
+            if (_canPlace && OnBoard) { 
                 FillPlace();
                 CreateBuildingSolid();
             }
@@ -96,14 +95,8 @@ public class BuildingTemplate : BuildingMain
         return false;
     }
 
-    // Destroys this gameObject
-    public void SelfDestruction() {
-        _manager.SelectionManager.PlacingOperation -= Placing;
-        Destroy(gameObject);
-    }
-
     // Assigns one corresponding point on grid
-    public void FillPlace() { 
+    private void FillPlace() { 
         GameBoard gameBoard = _manager.GameBoard;
         
         // Turning each cell to 1
@@ -117,7 +110,7 @@ public class BuildingTemplate : BuildingMain
     }
     
     // Places a building into current mouse position
-    public void CreateBuildingSolid() {
+    private void CreateBuildingSolid() {
         // BuildingSolid position
         float width = _buildingData.Cols;
         float height = _buildingData.Rows;
@@ -132,4 +125,9 @@ public class BuildingTemplate : BuildingMain
         building.CreateBuilding(BuildingIndex, _manager);
     }
 
+    // Destroys this gameObject
+    public void SelfDestruction() {
+        _manager.SelectionManager.PlacingOperation -= Placing;
+        Destroy(gameObject);
+    }
 }

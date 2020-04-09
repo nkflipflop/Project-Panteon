@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour 
 {
@@ -9,13 +7,12 @@ public class GameManager : MonoBehaviour
     public GameBoard GameBoard;             // Game Board
     public ProductionMenu ProductionMenu;   // Production Menu
     public InformationMenu InformationMenu; // Information Menu
-    public SelectionManager SelectionManager;
+    public SelectionController SelectionManager; // Selection Controller
 
     private void Awake() {
-        GameBoard.InitGameBoard(this);                  // Initing the game board
-        ProductionMenu.InitProductionMenu(this);        // Initing
-        SelectionManager.InitSelectionManager(this);    // Initing
-        InformationMenu.InitInformationMenu(this);      // Initing
-
+        GameBoard.InitGameBoard(this);                  // Initing the Game Board
+        ProductionMenu.InitProductionMenu(this);        // Initing the Production Menu
+        SelectionManager.InitSelectionManager(this);    // Initing the Selection Manager
+        InformationMenu.InitInformationMenu(this);      // Initing the Information Menu
     }
 }

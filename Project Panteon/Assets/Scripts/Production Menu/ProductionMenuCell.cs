@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class ProductionMenuCell : MonoBehaviour
 {
@@ -13,9 +12,9 @@ public class ProductionMenuCell : MonoBehaviour
     [SerializeField]
     protected Text text;            // Text on cell
 
-
-    private int _index;             // Index of building
     private ProductionMenu _productionMenu;   
+    private int _index;             // Index of building
+
 
     // Indexing cells
     public void CellIndexing(int index, ProductionMenu productionMenu) {

@@ -2,7 +2,7 @@
 
 public class Cell : MonoBehaviour 
 {
-    public SpriteRenderer Renderer;   // Sprite of cell
+    public SpriteRenderer Renderer; // Sprite of cell
     public Color NoCollisionColor;
     public Color CollisinColor;
     

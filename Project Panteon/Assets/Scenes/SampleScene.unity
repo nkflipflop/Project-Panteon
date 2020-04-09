@@ -578,7 +578,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db4efee5041bd14e95c793c6ec051f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Grid: {fileID: 1991685710}
 --- !u!4 &445108254
 Transform:
   m_ObjectHideFlags: 0
@@ -1596,9 +1595,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce71017a2903f7c4c9a699e438d0b897, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalCount: -1
-  ScrollSpeed: 60
-  _content: {fileID: 188681379}
+  TotalCount: -1
+  scrollSpeed: 60
+  content: {fileID: 188681379}
 --- !u!114 &2035734683
 MonoBehaviour:
   m_ObjectHideFlags: 0
