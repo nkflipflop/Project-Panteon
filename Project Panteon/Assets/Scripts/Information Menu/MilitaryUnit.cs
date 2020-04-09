@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MilitaryUnit : MonoBehaviour
@@ -15,35 +16,11 @@ public class MilitaryUnit : MonoBehaviour
     private float _speed = 1f;              // speed of the unit
 	private Vector2 _targetPos;             // target given
     private bool _startAStar;
+    private bool _fromArmy;
 
-	// Update is called once per frame
-	void FixedUpdate() {
-        // If there is a order given
-        if(_startAStar) 
-    		Movement();
-	}
-
-    // Moves the unit
-	private void Movement() {
-		/*_distanceBtwTarget = _targetPos - transform.position;
-
-		if (_distanceBtwTarget.magnitude < 0.6f)
-			_targetPos = Target.transform.position;*/
-	
-		if (AStar.Path != null && AStar.Path.Count > 0) {
-
-			if (_targetPos == new Vector2Int(1000, 0) || transform.position == (Vector3) _targetPos) {
-				_targetPos = AStar.Path.Pop();
-			}
-		}
-        else if(AStar.Path.Count == 0)
-            _startAStar = false;
-
-		if (_targetPos != new Vector2Int(1000, 0)) 
-			transform.position = Vector2.MoveTowards(transform.position, _targetPos, Time.deltaTime * _speed);      // moving the soldier towards to target
-	}
 
     public void InitMilitaryUnit(MilitaryUnitData militaryUnitData, GameManager manager) {
+        enabled = false;
         _manager = manager;
         // Adding this as a subscribers to SelectionManager
         _manager.SelectionManager.SelectUnit += SelectUnitSubsc;
@@ -55,6 +32,46 @@ public class MilitaryUnit : MonoBehaviour
         name = _militaryUnitData.name;
         Sprite.color = _militaryUnitData.UnitColor;
     }
+
+	// Update is called once per frame
+	void Update() {
+        // If there is a order given
+        Movement();
+	}
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("Unit")) {
+//            StartCoroutine(SlowDown(other.transform.position));
+        }
+    }
+
+    // Moves the unit
+	private void Movement() {
+		Vector2 _distanceBtwTarget = AStar.GoalPos - (Vector2) transform.position;
+
+	//	if (_distanceBtwTarget.magnitude < 0.6f && _fromArmy)
+           // AStar.GoalPos = (Vector2Int) transform.position;
+	
+		if (AStar.Path != null && AStar.Path.Count > 0) {
+			if (_targetPos == new Vector2Int(1000, 0) || transform.position == (Vector3) _targetPos) {
+				_targetPos = AStar.Path.Pop();
+			}
+		}
+        else if(AStar.Path.Count == 0){
+            _startAStar = false;
+            enabled = false;
+        }
+		if (_targetPos != new Vector2Int(1000, 0)) 
+			transform.position = Vector2.MoveTowards(transform.position, _targetPos, Time.deltaTime * _speed);      // moving the soldier towards to target
+        
+
+	}
+
+    IEnumerator SlowDown() {
+        //Vector3 away = transform.position - fellowSoldier;
+        //transform.position -= away;
+		yield return new WaitForSeconds(1022f);
+	}
 
     // Selection Listener
     private void SelectUnitSubsc(RaycastHit2D hit, List<MilitaryUnit> selectedUnits) {
@@ -86,6 +103,7 @@ public class MilitaryUnit : MonoBehaviour
 
     // AStar Listener
     private void StartAStar(Vector2Int targetPos) {
+        enabled = true;
         _targetPos = new Vector2Int(1000, 0);        // null value
         AStar.Current = null;
 		AStar.StartPos = new Vector2Int((int)transform.position.x, (int)transform.position.y);

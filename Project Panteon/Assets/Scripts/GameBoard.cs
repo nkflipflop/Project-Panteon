@@ -7,6 +7,7 @@ public class GameBoard : MonoBehaviour
     {   
         get { return new Vector2(_gridWidth, _gridHeight);}
     }
+    public SpriteRenderer Renderer;
 
     private GameManager _manager;   // Game Manager        
     private int _gridWidth;         // Columns of the grid
@@ -29,6 +30,13 @@ public class GameBoard : MonoBehaviour
                 GridContent[x, y] = 1;
         }
         
+
+        // Resizing the sprite according to dimensions
+        Vector2 size = new Vector2(_gridWidth, _gridHeight);
+        Renderer.size = size;
+        float offX = (size.x / 2) - .5f;
+        float offY = (size.y / 2) - .5f;
+        Renderer.transform.localPosition = new Vector2(offX, offY);
         //var cells = CellHelper.SpawnCells(Dimensions, _manager.GameConfig.Cell, Grid);
     }
 }
