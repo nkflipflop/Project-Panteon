@@ -33,7 +33,7 @@ public class GameBoard : MonoBehaviour {
                 GridContent[x, y] = 1;
         }
         
-        var cells = CellHelper.SpawnCells(Dimensions, _manager.GameConfig.Cell, Grid);
+        //var cells = CellHelper.SpawnCells(Dimensions, _manager.GameConfig.Cell, Grid);
     }
     
     public void print(){
