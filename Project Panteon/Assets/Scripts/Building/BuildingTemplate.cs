@@ -6,7 +6,9 @@ using UnityEngine;
 public class BuildingTemplate : BuildingMain 
 {
     public bool onBoard = false;    // True, when mouse on gameBoard
+    public Transform CellContainer; // All Cell objects of the building
 
+    private List<Cell> _buildingCells;    // All Cells of the building 
     private bool _canPlace;         // True, when the building can place
     
     
@@ -14,8 +16,23 @@ public class BuildingTemplate : BuildingMain
         // Adjusting placing listener
         _manager.SelectionManager.PlacingOperation += Placing;
         // Filling the building with tempCells
-        _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Temp), _manager.GameConfig, CellContainer);
+        _buildingCells = CellHelper.SpawnCells(_buildingData.dimensions, _manager.GameConfig.Cell, CellContainer);
+
+        foreach(var cell in _buildingCells)
+            cell.Renderer.sortingOrder = 3;
+        
+        AdjustContainerPos();
     }
+
+    private void Placing() { }
+
+    private void AdjustContainerPos(){
+        float width = Mathf.Round(_buildingData.Cols / 2);
+        float height = Mathf.Round(_buildingData.Rows / 2);
+
+        CellContainer.transform.localPosition -= new Vector3(width, height);
+    }
+
 
     private void Update() {
         MovingBuildingTemplate();
@@ -33,41 +50,80 @@ public class BuildingTemplate : BuildingMain
         // When Mouse left-click
         if (Input.GetMouseButtonDown(0)) {
             // If there is no collision on grid with another building
-            if (_canPlace && onBoard)     
+            if (_canPlace && onBoard) { 
+                FillPlace();
                 CreateBuildingSolid();
+            }
         }
 
         // Destroys thi object, When Mouse right-click
         if (Input.GetMouseButtonDown(1))
             SelfDestruction();
     }
-
-    private void Placing() { }
     
     
     // Checks whether there is colision with another building
     private bool CheckPlace() {
-        bool canPlace = true; 
-        foreach (var buildingCell in _buildingCells){    // Checking each cell of the building for collision
-            RaycastHit2D hit = Physics2D.Raycast(buildingCell.transform.position, Vector3.forward, Mathf.Infinity);
-            buildingCell.SetValid();                    
-            
-            if (hit.collider && hit.collider.CompareTag("Solid")) {
-                buildingCell.SetInvalid();    
+        bool canPlace = true;
+
+        // Checking each cell of the building for collision
+        foreach (var cell in _buildingCells){
+            Vector2 pos = cell.transform.position;
+            RaycastHit2D hit = Physics2D.Raycast(cell.transform.position, Vector3.forward, Mathf.Infinity);
+            cell.SetValid();
+
+            // If there is a building
+            if ((hit.collider && hit.collider.CompareTag("Solid")) || IsOutOfGrid(pos)) {
+                cell.SetInvalid();    
                 canPlace = false;
             }
         }
         return canPlace;
     }
 
+    // Checking if the template in grid area
+    private bool IsOutOfGrid(Vector2 pos) {
+        if (pos.x < 0 || pos.y < 0)
+            return true;
+        
+        GameBoard gameBoard = _manager.GameBoard;
+        float maxX = gameBoard.Dimensions[0] - 1;
+        float maxY = gameBoard.Dimensions[1] - 1;
+
+        if(pos.x > maxX || pos.y > maxY)
+            return true;
+
+        return false;
+    }
+
+    // Destroys this gameObject
     public void SelfDestruction() {
         _manager.SelectionManager.PlacingOperation -= Placing;
         Destroy(gameObject);
     }
+
+    // Assigns one corresponding point on grid
+    public void FillPlace() { 
+        GameBoard gameBoard = _manager.GameBoard;
+        
+        // Turning each cell to 1
+        foreach (var cell in _buildingCells) {
+            Vector2 point = cell.transform.position;
+            int gridH = (int) Mathf.Round(point.y);
+            int gridW = (int) Mathf.Round(point.x);
+
+            gameBoard.GridContent[gridW, gridH] = 0;
+        }
+    }
     
     // Places a building into current mouse position
     public void CreateBuildingSolid() {
-        Vector3 pos = transform.position;
+        // BuildingSolid position
+        float width = _buildingData.Cols;
+        float height = _buildingData.Rows;
+        Vector3 pos = CellContainer.transform.position;
+        pos.x += ((width / 2) - .5f);
+        pos.y += ((height / 2) - .5f);
         pos.z = 0;
 
         // Creating a building gameObject
@@ -75,4 +131,5 @@ public class BuildingTemplate : BuildingMain
         BuildingSolid building = buildingObject.GetComponent<BuildingSolid>(); 
         building.CreateBuilding(BuildingIndex, _manager);
     }
+
 }

@@ -18,8 +18,6 @@ public class BuildingSolid : BuildingMain
         _manager.SelectionManager.Deselect += DeselectMe;
 
         transform.parent = _manager.GameBoard.transform.GetChild(1);
-        // Filling the building with solidCells
-        _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Solid), _manager.GameConfig, CellContainer);
 
         AdjustCollider();   // Adjusting Collider
         DeselectMe();       // Coloring the cells with color of selected building
@@ -37,18 +35,11 @@ public class BuildingSolid : BuildingMain
         
         Collider.size = size;
         Sprite.transform.localScale = size;
-         
-        float offsetX = (width % 4) == 0 ? -.5f : (width % 2) == 0 ? .5f : 0; 
-        float offsetY = (height %4) == 0 ? -.5f : (height %2) == 0 ? .5f : 0;
-        Vector2 offset = new Vector2(offsetX, offsetY);
-        
-        Collider.offset = offset;
-        Sprite.transform.localPosition = offset;
     }
 
     // Created spawnPoint on available space
     private void CreateSpawnPoint() {
-        Vector3 pos = _buildingCells[_buildingCells.Capacity - 1].transform.position;
+        Vector3 pos = transform.position + new Vector3(_buildingData.Cols/2, _buildingData.Rows/2);
         
         // Spawn position of unit, when created
         pos.x += 2;

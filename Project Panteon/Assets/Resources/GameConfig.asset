@@ -13,19 +13,9 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   MapGridWidth: 100
-  MapGridHeight: 50
-  CellPrefabs:
-  - CellType: 0
-    GameObject: {fileID: 1120144242851945022, guid: 38f43f3de37030f49983f164219a4e37,
-      type: 3}
-  - CellType: 1
-    GameObject: {fileID: 6516714492559341301, guid: 318983a02e298604fae09db15ad03eb0,
-      type: 3}
-  - CellType: 2
-    GameObject: {fileID: 6615910063189652245, guid: 5de3b85f15a944545a8bb03798e1c9f4,
-      type: 3}
+  MapGridHeight: 100
+  Cell: {fileID: 6615910063189652242, guid: 5de3b85f15a944545a8bb03798e1c9f4, type: 3}
   Pool: {fileID: 8083583914371095536, guid: 5aaada4375363ee4bb74bd34f6eddd51, type: 3}
-  BuildingOnControl: {fileID: 0}
   BuildingTemplate: {fileID: 6433850267492192932, guid: a366816851556a0459076570754466b9,
     type: 3}
   BuildingSolid: {fileID: 8272792059329085670, guid: 11e1129c2828b754a8352e0ee9582e19,

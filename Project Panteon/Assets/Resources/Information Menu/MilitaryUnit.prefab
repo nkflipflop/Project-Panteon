@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 58197847454332712}
   - component: {fileID: 4692307832691640113}
   - component: {fileID: 114930066954694020}
+  - component: {fileID: 114740541355731818}
   m_Layer: 0
   m_Name: MilitaryUnit
   m_TagString: Untagged
@@ -134,3 +135,19 @@ MonoBehaviour:
   Collider: {fileID: 58197847454332712}
   Sprite: {fileID: 4885580060217020575}
   SelectedColor: {r: 1, g: 0.8039216, b: 0, a: 1}
+  aStar: {fileID: 114740541355731818}
+  _speed: 5
+--- !u!114 &114740541355731818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9216340136558442692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9b735e102a510c4db3f27586e437909, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StartPos: {x: 0, y: 0, z: 0}
+  GoalPos: {x: 0, y: 0, z: 0}

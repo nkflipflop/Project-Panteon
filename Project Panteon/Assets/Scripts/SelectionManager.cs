@@ -4,23 +4,26 @@ using UnityEngine;
 
 public class SelectionManager : MonoBehaviour
 {
+    // AStar Trigger 
+    public event Action<Vector2Int> AStarOrder;
+
     // Controls if there is placing operation currently
     public event PlacingDelegate PlacingOperation;
     public delegate void PlacingDelegate();
     private bool _placingOperation;
 
     // Building Selection event
-    public event Action<RaycastHit2D, List<BuildingSolid>> SelectBuilding;     // To select a building
-    private List<BuildingSolid> _selectedBuildings;                // Currently selected building
+    public event Action<RaycastHit2D, List<BuildingSolid>> SelectBuilding;  // To select a building
+    private List<BuildingSolid> _selectedBuildings;                         // Currently selected building
     
     // Unit selection events
-    public event Action<RaycastHit2D, List<MilitaryUnit>> SelectUnit;             // To select one unit
-    public event Action<Vector2, Vector2, List<MilitaryUnit>> SelectUnits;          // To select more than one unit
-    private List<MilitaryUnit> _selectedUnits;              // Currently Selected units
+    public event Action<RaycastHit2D, List<MilitaryUnit>> SelectUnit;       // To select one unit
+    public event Action<Vector2, Vector2, List<MilitaryUnit>> SelectUnits;  // To select more than one unit
+    private List<MilitaryUnit> _selectedUnits;                              // Currently Selected units
 
     // Deselection Publisher
-    public event Action Deselect;
-
+    public event Action Deselect;       // Deselects all selected
+    
     // Others
     public RectTransform SelectionBox;  // Selection Box
     
@@ -41,11 +44,11 @@ public class SelectionManager : MonoBehaviour
     }
     
     private void Update() {
-        if (PlacingOperation != null){
-            PlacingOperation();
+        // When there is placing
+        if (PlacingOperation != null)
             return;
-        }
 
+        // Selection is available
         if (_onBoard || _boxSelection) {
             // Left mouse click
             if (Input.GetMouseButtonDown(0)) {
@@ -55,6 +58,7 @@ public class SelectionManager : MonoBehaviour
             }
         }
         
+        // Type of selection
         if (_selection) {
             // Left mouse held down
             if (Input.GetMouseButton(0))
@@ -64,6 +68,10 @@ public class SelectionManager : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
                 RealeaseSelection();
         }
+
+        // When units are selected
+        if(_selectedUnits.Count > 0)
+            SoldiersReady();
     }
 
     // Deselection all currently selected
@@ -130,11 +138,23 @@ public class SelectionManager : MonoBehaviour
         }
     }
 
+    // When soldiers are selected
+    private void SoldiersReady() {
+        // If there is an order
+        if (Input.GetMouseButtonDown(1)) {
+            Vector3 targetPos = _manager.GameCamera.ScreenToWorldPoint(Input.mousePosition);
+		    Vector2Int GoalPos = new Vector2Int(Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y));
+
+            // Publishing the order
+            AStarOrder?.Invoke(GoalPos);
+        }
+    }
+
 
     public void MouseOnHUD () {
         _onBoard = false;
     }
-
+    
     public void MouseOnBoard () {
         _onBoard = true;
     }
