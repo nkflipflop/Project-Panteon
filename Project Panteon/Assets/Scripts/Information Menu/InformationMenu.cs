@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,15 +8,16 @@ public class InformationMenu : MonoBehaviour
     public Image BuildingImage;     // Image of the selectedBuilding
     public Text BuildingName;       // Name of the selectedBuilding
     public InformationMenuCell InformationMenuCell; // A cell object to create unit production panel 
-    public Transform SpawnedMilitaryUnits;
+    public Transform SpawnParent;
+
+    public event Action<int, Transform> SpawnUnit;  // To send spawn request
 
 
     [SerializeField]
     protected RectTransform _content;           // Rectangle of Content object of ScrollBar
     private GameManager _manager;               // Gane Manager
-    private BuildingSolid _selectedBuilding;    // Building on control 
-    private List<MilitaryUnit> _productionUnits;// Unit object samples of selected building to spawn
-
+    private List<MilitaryUnitData> _productionUnits;// Unit object samples of selected building to spawn
+    private BuildingData _buildingData;     // BuildingData on showing 
     
     // Inits the menu
     public void InitInformationMenu(GameManager manager) {
@@ -24,65 +25,50 @@ public class InformationMenu : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    // Denies When there is new building placement
-    public void RequestSelection(BuildingSolid building) {
-        if (!_manager.GameConfig.BuildingOnControl)
-            SelectBuilding(building);
-    }
-
-    // Selects building to show information on menu
-    private void SelectBuilding(BuildingSolid building) {
+    // Shows information of the selected building on the menu
+    public void ShowBuildingInfo(BuildingData buildingData) {
         // Deselecting previously selected building
-        if(_selectedBuilding)
-            DeselectBuilding();
+        if(_buildingData)
+            RemoveInformation();
 
         // Unhiding the information menu
         this.gameObject.SetActive(true);
         _content.gameObject.SetActive(false);
 
         // Assigning newly selected building
-        _selectedBuilding = building;
-
-        // Selection adjustments on the buildingSolid
-        BuildingData buildingData = _selectedBuilding.Selected();;
-        BuildingName.text = buildingData.name;
-        BuildingImage.sprite = buildingData.BuildingImage;
+        _buildingData = buildingData;
+        
+        // Setting Information Panel
+        BuildingName.text = _buildingData.name;
+        BuildingImage.sprite = _buildingData.BuildingImage;
 
         // Listing the units
-        if (buildingData.CanProductUnit)
-            ListUnits(buildingData);
+        if (_buildingData.CanProductUnit)
+            ListUnits();
     }
 
-    private void ListUnits(BuildingData buildingData){  
+    // Listing productable units on information panel
+    private void ListUnits(){  
         // Unhiding the production content
         _content.gameObject.SetActive(true);
-        _productionUnits = new List<MilitaryUnit>();
+        _productionUnits = new List<MilitaryUnitData>();
 
         // Listing the units
-        int unitCount = buildingData.ProductionUnits.Length;
+        int unitCount = _buildingData.ProductionUnits.Length;
         for (int i = 0; i < unitCount; i++) {
-            var unitData = buildingData.ProductionUnits[i];
+            var unitData = _buildingData.ProductionUnits[i];
             
             // Listing military units on information bar
             InformationMenuCell cell =  Instantiate(InformationMenuCell, Vector3.zero, Quaternion.identity, _content.transform);
             cell.SetUnitCell(i, unitData.UnitIcon, this);
 
-            // Instantiating temp unit objects to spawn units
-            MilitaryUnit tempUnit =  Instantiate(_manager.GameConfig.MilitaryUnit, Vector3.zero, Quaternion.identity, _content.transform);
-            tempUnit.InitMilitaryUnit(unitData);
-            tempUnit.gameObject.SetActive(false);
-            _productionUnits.Add(tempUnit);
+            // Adding unit data to list
+            _productionUnits.Add(unitData);
         }
     }
 
-    // Spawns the requested MilitaryUnit
-    public void CloneUnit(int unitIndex){
-        // Spawning on available spawPoint of selectedBuilding
-        _selectedBuilding.SpawnUnit(_productionUnits[unitIndex], SpawnedMilitaryUnits);
-    }
-
     // Deselects current selectedBuilding
-    public void DeselectBuilding() {
+    public void RemoveInformation() {
         // Hiding Objects
         this.gameObject.SetActive(false);
         _content.gameObject.SetActive(true);
@@ -90,12 +76,10 @@ public class InformationMenu : MonoBehaviour
         // Destroying Old data
         foreach (Transform child in _content.transform)
             Destroy(child.gameObject);
+    }
 
-        // Deselection adjustments on the buildingSolid
-        if(_selectedBuilding)
-            _selectedBuilding.Deselect();
-
-        _selectedBuilding = null;
-
+    // Sending spawn request to selected building
+    public void SendSpawnRequest(int unitIndex) {
+        SpawnUnit?.Invoke(unitIndex, SpawnParent);
     }
 }

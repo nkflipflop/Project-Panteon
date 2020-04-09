@@ -9,21 +9,16 @@ public class BuildingData : ScriptableObject
     public Sprite BuildingImage;
     public Sprite BuildingIcon;    
     public Color BuildingColor = Color.white;
+    
     public bool CanProductUnit = false;
     public MilitaryUnitData[] ProductionUnits;
 
     public int Rows = 1;
     public int Cols = 1;
 
-
-    // Fills the CellType matrix with given cellType
-    public CellType[,] GetCellMatrix(CellType cellType) {
-        var output = new CellType[Cols, Rows];
-            
-        for (var y = 0; y < Rows; y++) {
-            for (var x = 0; x < Cols; x++)
-                output[x, y] = cellType;
-        }
-        return output;
+    public Vector2 dimensions 
+    {
+        get { return new Vector2(Cols, Rows); }
     }
+
 }

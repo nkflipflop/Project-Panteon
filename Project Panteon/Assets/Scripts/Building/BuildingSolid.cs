@@ -5,26 +5,41 @@ using UnityEngine;
 
 public class BuildingSolid : BuildingMain 
 {
-    public Color SelectedColor;
+    public SpriteRenderer Sprite;   // Image of the building
+    public BoxCollider2D Collider;  // Collidr of th building
+    public Color SelectedColor;     // When the building selected
 
-    private Transform _spawnPoint;
+    private Transform _spawnPoint;  // Spaen Point
 
+    // When Firstly created
     public override void Created() {
+        // Adding Listeners
+        _manager.SelectionManager.SelectBuilding += SelectBuildingSubsc;
+        _manager.SelectionManager.Deselect += DeselectMe;
+
         transform.parent = _manager.GameBoard.transform.GetChild(1);
-        // Filling the building with solidCells
-        _buildingCells = CellHelper.SpawnCells(_buildingData.GetCellMatrix(CellType.Solid), _manager.GameConfig, CellContainer);
 
-        // Coloring the cells with color of selected building
-        Deselect();
-
+        AdjustCollider();   // Adjusting Collider
+        DeselectMe();       // Coloring the cells with color of selected building
+        
         // Creating spawnPoint
         if (_buildingData.CanProductUnit)
             CreateSpawnPoint();
     }
 
+    // Adjusts the collider
+    private void AdjustCollider(){
+        float width = _buildingData.Cols;
+        float height = _buildingData.Rows;
+        Vector2 size = new Vector2(width, height);
+        
+        Collider.size = size;
+        Sprite.transform.localScale = size;
+    }
+
     // Created spawnPoint on available space
     private void CreateSpawnPoint() {
-        Vector3 pos = _buildingCells[_buildingCells.Capacity - 1].transform.position;
+        Vector3 pos = transform.position + new Vector3(_buildingData.Cols/2, _buildingData.Rows/2);
         
         // Spawn position of unit, when created
         pos.x += 2;
@@ -34,38 +49,35 @@ public class BuildingSolid : BuildingMain
         _spawnPoint.name = "Spawn Point";
     }
 
-    // Requests Selection for this building from InformationMenu
-    public void CallBaseBuilding() {
-        _manager.InformationMenu.RequestSelection(this);
+    // Selection event listener
+    private void SelectBuildingSubsc(RaycastHit2D hit, List<BuildingSolid> selectedBuilding) {
+        if (hit.collider == Collider) {
+            // Adding spawn listener
+            _manager.InformationMenu.SpawnUnit += SpawnUnit;    
+            // Coloring the cells with selection color
+            Sprite.color = SelectedColor;
+
+            selectedBuilding.Add(this);
+        }
     }
 
-    // When the building is selected to get information
-    public BuildingData Selected() {
-        // Coloring the cells with selection color
-        foreach (var buildingCell in _buildingCells)
-            buildingCell.GetComponent<SpriteRenderer>().color = SelectedColor;
-
-        return _buildingData;
-    }
-
-
-    // When the building is deselected
-    public void Deselect() {
+    // Deselection event Listener
+    private void DeselectMe() {
+        // Rempveing spawn listener
+        _manager.InformationMenu.SpawnUnit -= SpawnUnit;    
         // Coloring the cells with color of building
-        foreach (var buildingCell in _buildingCells)
-            buildingCell.GetComponent<SpriteRenderer>().color = _buildingData.BuildingColor;
+        Sprite.color = _buildingData.BuildingColor;
     }
 
     // Spawns new unit on spawnPoint
-    public void SpawnUnit(MilitaryUnit militaryUnit, Transform parent) {
+    private void SpawnUnit(int unitIndex, Transform parent) {
         // Positioning on an interval
         Vector3 spawnPosition = _spawnPoint.position;
         spawnPosition.x += Random.Range(-.5f, .5f);
         spawnPosition.y += Random.Range(-.5f, .5f);
 
         // Creating the unit
-        MilitaryUnit unit = Instantiate(militaryUnit, spawnPosition, Quaternion.identity, parent);
-        unit.name = militaryUnit.name;
-        unit.gameObject.SetActive(true);
+        MilitaryUnit unit = Instantiate(_manager.GameConfig.MilitaryUnit, spawnPosition, Quaternion.identity, parent);
+        unit.InitMilitaryUnit(_buildingData.ProductionUnits[unitIndex], _manager);
     }
 }

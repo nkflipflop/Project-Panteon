@@ -68,9 +68,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 606911fe49799084e9715b1f3e051ac9, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.81057835, a: 1}
+  m_Color: {r: 0.25007117, g: 0.33962262, b: 0.1938412, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -92,5 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df9b34b6162022c409cb0f748b44f307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Renderer: {fileID: 7471479215587932942}
   NoCollisionColor: {r: 0.86274517, g: 1, b: 0, a: 1}
   CollisinColor: {r: 1, g: 0.26011056, b: 0, a: 1}
+  _filled: 0
